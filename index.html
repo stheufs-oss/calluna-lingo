@@ -1,0 +1,2007 @@
+<!doctype html><html lang="de"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Calluna Lingo</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#953d82">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow game column — a winding lesson path per unit, lessons take over the screen with a check bar pinned to the bottom */
+:root {
+  --bg: #ffffff;
+  --surface: #f3f6ef;
+  --ink: #2e2a31;
+  --ink-soft: #6d6873;
+  --line: #e2e5de;
+  --line-deep: #cfd3ca;
+  --heather: #953d82;
+  --heather-deep: #6c2a5d;
+  --heather-wash: #f7ecf4;
+  --sage: #7aa356;
+  --sage-deep: #557a35;
+  --sage-wash: #eaf3e1;
+  --bad: #d0465a;
+  --bad-deep: #a3303f;
+  --bad-wash: #fde9ec;
+  --gold: #e3a21a;
+  --on-accent: #ffffff;
+  --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-body: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #18171a; --surface: #222624; --ink: #ece9ee; --ink-soft: #aaa4ad; --line: #34363a; --line-deep: #46494d;
+    --heather: #d77fc0; --heather-deep: #9c4d88; --heather-wash: #33232f;
+    --sage: #8fbb69; --sage-deep: #5f8a3d; --sage-wash: #233021;
+    --bad: #f0798a; --bad-deep: #b2465a; --bad-wash: #3a2128; --gold: #f0b73c; --on-accent: #16131a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #18171a; --surface: #222624; --ink: #ece9ee; --ink-soft: #aaa4ad; --line: #34363a; --line-deep: #46494d;
+  --heather: #d77fc0; --heather-deep: #9c4d88; --heather-wash: #33232f;
+  --sage: #8fbb69; --sage-deep: #5f8a3d; --sage-wash: #233021;
+  --bad: #f0798a; --bad-deep: #b2465a; --bad-wash: #3a2128; --gold: #f0b73c; --on-accent: #16131a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+}
+button { font: inherit; color: inherit; }
+.wrap { max-width: 560px; margin: 0 auto; }
+
+/* top status bar */
+.topbar {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-block: 14px 12px; border-bottom: 2px solid var(--line);
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--heather); letter-spacing: -.01em; }
+.stats { display: flex; gap: 14px; align-items: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.stat { display: inline-flex; align-items: center; gap: 5px; }
+.stat svg { width: 22px; height: 22px; }
+.stat.fire { color: var(--gold); }
+.stat.xp { color: var(--heather); }
+.stat.off { color: var(--ink-soft); }
+
+.tabs { display: flex; gap: 8px; padding-block: 14px 4px; }
+.tab {
+  flex: 1; border: 2px solid var(--line); border-bottom-width: 4px; background: var(--bg); border-radius: 14px;
+  padding: 9px 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: 14px; cursor: pointer; color: var(--ink-soft);
+}
+.tab[aria-selected="true"] { border-color: var(--heather); color: var(--heather); background: var(--heather-wash); }
+
+/* daily goal */
+.goal { display: grid; gap: 6px; padding: 14px 16px; border: 2px solid var(--line); border-radius: 16px; margin-top: 12px; }
+.goal-head { display: flex; justify-content: space-between; font-weight: 700; font-size: 15px; }
+.goal-head span:last-child { color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.meter { height: 14px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.meter > i { display: block; height: 100%; border-radius: 99px; background: var(--gold); width: 0; transition: width .4s; }
+.quick { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.quick .btn { letter-spacing: .04em; padding: 9px 12px; }
+
+/* unit path */
+.unit { margin-top: 18px; }
+.unit-band {
+  background: var(--heather); color: var(--on-accent); border-radius: 16px; padding: 14px 16px;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+}
+.unit:nth-child(3n+2) .unit-band { background: var(--sage-deep); }
+.unit:nth-child(3n) .unit-band { background: var(--heather-deep); }
+.unit-band small { display: block; font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; opacity: .85; }
+.unit-band h2 { margin: 2px 0 0; font-family: var(--font-display); font-size: 22px; font-weight: 800; line-height: 1.1; text-wrap: balance; }
+.unit-band .en { font-size: 14px; opacity: .85; }
+.unit-meta { text-align: right; font-weight: 700; font-size: 14px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.path { display: flex; justify-content: space-between; align-items: center; gap: 6px; padding: 40px 6px 4px; }
+.node-wrap { position: relative; display: grid; justify-items: center; }
+.node {
+  width: 56px; height: 52px; border-radius: 50%; border: none; cursor: pointer; position: relative;
+  background: var(--line); box-shadow: 0 6px 0 var(--line-deep); color: var(--ink-soft);
+  display: grid; place-items: center; transition: transform .08s;
+}
+.node svg { width: 24px; height: 24px; }
+.node:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--line-deep); }
+.node.done { background: var(--gold); box-shadow: 0 6px 0 #b67f0e; color: #fff; }
+.node.next { background: var(--sage); box-shadow: 0 6px 0 var(--sage-deep); color: #fff; }
+.node.next::after { content: ""; position: absolute; inset: -9px; border-radius: 50%; border: 4px solid var(--sage); opacity: .35; animation: ring 1.8s ease-out infinite; }
+.node:focus-visible { outline: 3px solid var(--heather); outline-offset: 6px; }
+.bubble {
+  position: absolute; bottom: calc(100% + 12px); white-space: nowrap; background: var(--bg); border: 2px solid var(--line);
+  color: var(--sage-deep); font-weight: 800; letter-spacing: .06em; font-size: 14px; padding: 6px 12px; border-radius: 12px;
+  animation: bob 1.6s ease-in-out infinite;
+}
+.bubble::after { content: ""; position: absolute; left: 50%; top: 100%; width: 10px; height: 10px; background: var(--bg); border-right: 2px solid var(--line); border-bottom: 2px solid var(--line); transform: translate(-50%, -5px) rotate(45deg); }
+@keyframes ring { from { transform: scale(.9); opacity: .5; } to { transform: scale(1.15); opacity: 0; } }
+@keyframes bob { 50% { transform: translateY(-4px); } }
+.legend { display: flex; justify-content: center; gap: 6px; font-size: 13px; color: var(--ink-soft); }
+
+/* buttons */
+.btn {
+  border: none; border-radius: 14px; padding: 13px 20px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; font-size: 15px;
+  background: var(--sage); color: #fff; box-shadow: 0 4px 0 var(--sage-deep); cursor: pointer; transition: transform .06s;
+}
+.btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 var(--sage-deep); }
+.btn:disabled, .btn.heather:disabled, .btn.ghost:disabled, .btn.bad:disabled { border-color: transparent; background: var(--line); box-shadow: 0 4px 0 var(--line-deep); color: var(--ink-soft); cursor: default; }
+.btn.heather { background: var(--heather); box-shadow: 0 4px 0 var(--heather-deep); }
+.btn.bad { background: var(--bad); box-shadow: 0 4px 0 var(--bad-deep); }
+.btn.ghost { background: var(--bg); color: var(--heather); border: 2px solid var(--line); box-shadow: 0 4px 0 var(--line); }
+.btn.small { padding: 9px 14px; font-size: 13px; }
+.btn:focus-visible, .tile:focus-visible, .opt:focus-visible, .pair:focus-visible, .icon-btn:focus-visible { outline: 3px solid var(--heather); outline-offset: 3px; }
+
+/* glossary */
+.gloss { display: grid; gap: 22px; padding-top: 18px; }
+.search { width: 100%; font: inherit; padding: 12px 14px; border: 2px solid var(--line); border-radius: 14px; background: var(--bg); color: var(--ink); }
+.search:focus-visible { outline: 3px solid var(--heather); outline-offset: 2px; }
+.gloss h3 { margin: 0 0 8px; font-family: var(--font-display); font-size: 19px; color: var(--heather); }
+.glist { list-style: none; margin: 0; padding: 0; border: 2px solid var(--line); border-radius: 16px; overflow: hidden; }
+.glist li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); }
+.glist li:first-child { border-top: none; }
+.glist .de { font-weight: 600; min-width: 0; }
+.glist .en { color: var(--heather); font-weight: 600; min-width: 0; }
+.glist .alt { display: block; font-size: 13px; color: var(--ink-soft); font-weight: 400; }
+.dots { display: inline-flex; gap: 3px; }
+.dots i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.dots i.on { background: var(--gold); }
+.gend { display: flex; align-items: center; gap: 8px; }
+.icon-btn { border: none; background: transparent; cursor: pointer; padding: 4px; color: var(--sage-deep); border-radius: 8px; display: inline-grid; place-items: center; }
+.icon-btn svg { width: 22px; height: 22px; }
+
+/* lesson screen */
+.lesson { position: fixed; inset: 0; z-index: 20; background: var(--bg); display: grid; grid-template-rows: auto 1fr auto; padding-top: env(safe-area-inset-top, 0px); }
+.lesson[hidden] { display: none; }
+.lesson-top { display: flex; align-items: center; gap: 14px; padding: 16px max(16px, env(safe-area-inset-right, 0px)) 8px max(16px, env(safe-area-inset-left, 0px)); max-width: 640px; width: 100%; margin: 0 auto; }
+.close { border: none; background: transparent; cursor: pointer; color: var(--ink-soft); padding: 4px; display: grid; place-items: center; border-radius: 8px; }
+.close svg { width: 26px; height: 26px; }
+.lbar { flex: 1; height: 16px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.lbar > i { display: block; height: 100%; background: var(--sage); border-radius: 99px; transition: width .35s; width: 0; box-shadow: inset 0 4px 0 rgba(255,255,255,.25); }
+.hearts { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; color: var(--bad); font-variant-numeric: tabular-nums; }
+.hearts svg { width: 24px; height: 24px; }
+.stage { overflow-y: auto; padding: 18px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px)); }
+.stage-in { max-width: 600px; margin: 0 auto; display: grid; gap: 20px; }
+.kind { font-family: var(--font-display); font-weight: 800; font-size: 25px; line-height: 1.15; margin: 0; text-wrap: balance; }
+.newtag { justify-self: start; display: inline-flex; gap: 6px; align-items: center; background: var(--heather-wash); color: var(--heather); font-weight: 800; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; padding: 4px 10px; border-radius: 99px; }
+.prompt { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.prompt .term { font-size: 24px; font-weight: 700; border: 2px solid var(--line); border-radius: 16px; padding: 10px 16px; position: relative; }
+.prompt .term small { display: block; font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+.speak-big { width: 64px; height: 64px; border-radius: 18px; border: none; background: var(--heather); box-shadow: 0 5px 0 var(--heather-deep); color: #fff; cursor: pointer; display: grid; place-items: center; }
+.speak-big svg { width: 32px; height: 32px; }
+.speak-big:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--heather-deep); }
+.opts { display: grid; gap: 10px; }
+.opt {
+  display: flex; gap: 12px; align-items: center; text-align: left; cursor: pointer;
+  border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 14px; background: var(--bg); padding: 13px 14px; font-weight: 600;
+}
+.opt .k { flex: none; width: 28px; height: 28px; border: 2px solid var(--line); border-radius: 8px; display: grid; place-items: center; font-size: 14px; color: var(--ink-soft); }
+.opt[aria-pressed="true"] { border-color: var(--heather); background: var(--heather-wash); color: var(--heather); }
+.opt[aria-pressed="true"] .k { border-color: var(--heather); color: var(--heather); }
+.opt:disabled { cursor: default; }
+.answer-line { min-height: 64px; border-bottom: 2px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 10px; align-content: flex-start; }
+.bank { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.tile { border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 12px; background: var(--bg); padding: 8px 12px; font-weight: 600; cursor: pointer; }
+.tile.used { visibility: hidden; }
+.typein { width: 100%; font: inherit; font-size: 19px; min-height: 110px; resize: none; padding: 14px; border: 2px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); }
+.typein:focus-visible { outline: 3px solid var(--heather); outline-offset: 2px; }
+.pairs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pair { border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 14px; background: var(--bg); padding: 12px 10px; font-weight: 600; cursor: pointer; min-height: 56px; text-align: center; overflow-wrap: anywhere; }
+.pair[aria-pressed="true"] { border-color: var(--heather); background: var(--heather-wash); color: var(--heather); }
+.pair.ok { border-color: var(--line); color: var(--line-deep); background: var(--surface); cursor: default; }
+.pair.miss { border-color: var(--bad); background: var(--bad-wash); color: var(--bad); }
+
+.checkbar { border-top: 2px solid var(--line); padding: 16px max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); background: var(--bg); }
+.checkbar.good { background: var(--sage-wash); border-top-color: transparent; }
+.checkbar.miss { background: var(--bad-wash); border-top-color: transparent; }
+.check-in { max-width: 600px; margin: 0 auto; display: grid; gap: 12px; }
+.verdict { display: grid; gap: 4px; }
+.verdict strong { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+.checkbar.good .verdict strong { color: var(--sage-deep); }
+.checkbar.miss .verdict strong, .checkbar.miss .verdict p { color: var(--bad); }
+.verdict p { margin: 0; font-weight: 600; }
+.verdict .note { font-weight: 500; font-size: 15px; color: var(--ink-soft); }
+.check-row { display: flex; gap: 10px; justify-content: space-between; align-items: center; }
+.check-row .btn { flex: 1; max-width: 260px; margin-left: auto; }
+
+/* result screen */
+.result { display: grid; justify-items: center; text-align: center; gap: 18px; padding-top: 30px; }
+.result h2 { font-family: var(--font-display); font-weight: 800; font-size: 32px; margin: 0; color: var(--heather); text-wrap: balance; }
+.result p { margin: 0; color: var(--ink-soft); max-width: 40ch; }
+.cards { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.rcard { width: 100px; border: 2px solid var(--gold); border-radius: 16px; overflow: hidden; }
+.rcard b { display: block; background: var(--gold); color: #fff; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; padding: 4px; }
+.rcard span { display: block; padding: 12px 6px; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.rcard.h { border-color: var(--sage); } .rcard.h b { background: var(--sage); }
+.rcard.m { border-color: var(--heather); } .rcard.m b { background: var(--heather); }
+.mistakes { text-align: left; width: 100%; border: 2px solid var(--line); border-radius: 16px; padding: 12px 16px; display: grid; gap: 6px; }
+.mistakes b { color: var(--heather); }
+.sync { text-align: center; font-size: 13px; color: var(--ink-soft); margin: 26px 0 0; }
+
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.shake { animation: shake .35s; }
+@media (prefers-reduced-motion: reduce) {
+  .node.next::after, .bubble, .shake { animation: none; }
+  .lbar > i, .meter > i { transition: none; }
+}
+@media (max-width: 420px) {
+  .glist li { grid-template-columns: minmax(0, 1fr) auto; }
+  .glist .en { grid-column: 1; grid-row: 2; }
+  .glist .gend { grid-row: 1 / span 2; grid-column: 2; }
+  .kind { font-size: 22px; }
+}
+
+/* ---- v2 additions: mascot, coach, conversations, achievements ---- */
+.tabs { gap: 6px; }
+.tab { padding: 9px 4px; font-size: 13px; letter-spacing: .04em; }
+.tab .max { display: inline-block; margin-left: 4px; font-size: 10px; padding: 1px 5px; border-radius: 6px; background: var(--heather); color: var(--on-accent); vertical-align: 2px; }
+.sound-btn { border: 2px solid var(--line); background: var(--bg); color: var(--sage-deep); border-radius: 12px; width: 40px; height: 36px; display: grid; place-items: center; cursor: pointer; }
+.sound-btn svg { width: 22px; height: 22px; }
+.sound-btn[aria-pressed="false"] { color: var(--ink-soft); }
+.hero { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; align-items: center; margin-top: 14px; }
+.mascot { display: block; width: 100%; height: auto; overflow: visible; }
+.mascot.idle { animation: idle 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
+.mascot.jump { animation: jump .55s ease-out; transform-origin: 50% 100%; }
+.mascot.droop { animation: droop .6s ease-out; transform-origin: 50% 100%; }
+@keyframes idle { 50% { transform: translateY(-3px) rotate(-1.5deg); } }
+@keyframes jump { 30% { transform: translateY(-14px) scale(1.04, .97); } 60% { transform: translateY(0) scale(1.05, .93); } }
+@keyframes droop { 40% { transform: rotate(-4deg) translateY(2px); } 80% { transform: rotate(2deg); } }
+.say { position: relative; border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; font-weight: 600; background: var(--bg); min-width: 0; }
+.say::before { content: ""; position: absolute; left: -9px; top: 50%; width: 14px; height: 14px; background: var(--bg); border-left: 2px solid var(--line); border-bottom: 2px solid var(--line); transform: translateY(-50%) rotate(45deg); }
+.say small { display: block; font-weight: 500; color: var(--ink-soft); font-size: 14px; margin-top: 2px; }
+.say .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.coach { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 10px; align-items: end; }
+.coach .say { align-self: center; }
+.say-btn { font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.say-btn:focus-visible { outline: 3px solid var(--heather); outline-offset: 3px; }
+.coach .say .term-big { font-size: 23px; font-weight: 700; display: block; line-height: 1.2; }
+.coach .say .term-big + small { margin-top: 4px; }
+.mini-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.linkish { border: none; background: transparent; color: var(--heather); font-weight: 700; cursor: pointer; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; }
+.explain { background: var(--bg); border: 2px solid var(--line); border-radius: 14px; padding: 12px 14px; font-size: 15px; color: var(--ink); white-space: pre-wrap; max-height: 30vh; overflow-y: auto; }
+.combo { display: inline-block; margin-left: 8px; font-size: 14px; color: var(--gold); font-family: var(--font-body); font-weight: 800; letter-spacing: .04em; }
+
+/* conversations */
+.convs { display: grid; gap: 12px; padding-top: 16px; }
+.conv-card { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; border: 2px solid var(--line); border-bottom-width: 4px; border-radius: 16px; padding: 14px; background: var(--bg); cursor: pointer; }
+.conv-card:focus-visible { outline: 3px solid var(--heather); outline-offset: 3px; }
+.conv-card b { display: block; font-size: 17px; }
+.conv-card span.d { display: block; font-size: 14px; color: var(--ink-soft); }
+.conv-card .lvl { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--heather); }
+.avatar { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #fff; background: var(--sage-deep); }
+.avatar.h { background: var(--heather); } .avatar.d { background: var(--heather-deep); } .avatar.g { background: #b67f0e; }
+.max-intro { border: 2px solid var(--heather); background: var(--heather-wash); border-radius: 16px; padding: 14px 16px; margin-top: 14px; }
+.max-intro strong { color: var(--heather); font-family: var(--font-display); font-size: 19px; }
+.max-intro p { margin: 4px 0 0; font-size: 15px; }
+.chat { display: grid; gap: 12px; }
+.scene { font-size: 15px; color: var(--ink-soft); border-left: 4px solid var(--sage); padding: 4px 0 4px 12px; }
+.msg { display: grid; gap: 4px; max-width: 88%; }
+.msg.them { justify-self: start; }
+.msg.me { justify-self: end; }
+.bub { border-radius: 16px; padding: 10px 14px; border: 2px solid var(--line); }
+.msg.them .bub { background: var(--bg); border-top-left-radius: 4px; }
+.msg.me .bub { background: var(--heather-wash); border-color: transparent; border-top-right-radius: 4px; }
+.msg .who { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; }
+.msg .tip { font-size: 14px; color: var(--sage-deep); background: var(--sage-wash); border-radius: 10px; padding: 6px 10px; }
+.typing { display: inline-flex; gap: 4px; padding: 14px; }
+.typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-soft); animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 50% { opacity: .25; } }
+.compose { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+.compose textarea { font: inherit; padding: 12px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); min-height: 52px; max-height: 140px; resize: none; }
+.compose textarea:focus-visible { outline: 3px solid var(--heather); outline-offset: 2px; }
+.hints { display: flex; gap: 6px; flex-wrap: wrap; }
+.hint-chip { border: 2px solid var(--line); border-radius: 99px; padding: 4px 10px; font-size: 14px; background: var(--bg); cursor: pointer; }
+.fb { display: grid; gap: 10px; border: 2px solid var(--line); border-radius: 16px; padding: 14px 16px; }
+.fb h3 { margin: 0; font-family: var(--font-display); color: var(--heather); font-size: 21px; }
+.fb ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.stars { color: var(--gold); display: inline-flex; gap: 2px; }
+.stars svg { width: 22px; height: 22px; }
+.stars .off { color: var(--line); }
+
+/* achievements */
+.achs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; padding-top: 16px; }
+.ach { border: 2px solid var(--line); border-radius: 16px; padding: 12px; display: grid; gap: 6px; justify-items: start; }
+.ach .badge { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--line); color: var(--ink-soft); }
+.ach .badge svg { width: 26px; height: 26px; }
+.ach.got .badge { background: var(--gold); color: #fff; }
+.ach b { font-size: 15px; line-height: 1.2; }
+.ach span { font-size: 13px; color: var(--ink-soft); }
+.statgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 16px; }
+.statbox { border: 2px solid var(--line); border-radius: 16px; padding: 12px 14px; }
+.statbox b { display: block; font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.statbox span { font-size: 13px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.toast { position: fixed; left: 50%; top: calc(64px + env(safe-area-inset-top, 0px)); transform: translateX(-50%); z-index: 40; background: var(--ink); color: var(--bg); padding: 10px 16px; border-radius: 14px; font-weight: 700; display: flex; gap: 10px; align-items: center; max-width: calc(100% - 32px); }
+.toast svg { width: 22px; height: 22px; color: var(--gold); flex: none; }
+@media (prefers-reduced-motion: reduce) { .mascot.idle, .mascot.jump, .mascot.droop, .typing i { animation: none; } }
+/* ---- v6: fit lessons on one phone screen ---- */
+.stage { padding-top: 10px; padding-bottom: 12px; }
+.stage-in { gap: 14px; }
+.kind { font-size: 21px; }
+.coach { grid-template-columns: 62px minmax(0, 1fr); }
+.coach .say .term-big { font-size: 20px; }
+.say { padding: 10px 12px; }
+.opts { gap: 8px; }
+.opt { padding: 10px 12px; }
+.opt .k { width: 24px; height: 24px; font-size: 13px; }
+.typein { min-height: 72px; font-size: 18px; padding: 12px; }
+.pairs { gap: 8px; }
+.pair { min-height: 48px; padding: 8px; font-size: 15px; }
+.answer-line { min-height: 52px; }
+.tile { padding: 6px 10px; }
+.bank { gap: 6px; }
+.checkbar { padding-top: 12px; padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+.check-in { gap: 8px; }
+.verdict strong { font-size: 20px; }
+.explain { max-height: 20vh; font-size: 14px; padding: 10px 12px; }
+.lesson-top { padding-top: 10px; padding-bottom: 4px; }
+.speak-big { width: 56px; height: 56px; }
+.prompt .term { font-size: 21px; padding: 8px 14px; }
+.result { gap: 12px; padding-top: 6px; }
+.result h2 { font-size: 27px; }
+.mistakes { max-height: 24vh; overflow-y: auto; }
+.hero { grid-template-columns: 72px minmax(0, 1fr); margin-top: 10px; }
+.goal { padding: 10px 14px; margin-top: 10px; }
+.tabs { padding-top: 10px; }
+@media (max-height: 700px) {
+  .kind { font-size: 19px; }
+  .coach { grid-template-columns: 50px minmax(0, 1fr); }
+  .newtag { display: none; }
+  .opt { padding: 8px 12px; }
+}
+
+/* ---- v7: Duolingo-style bottom sheet – answer feedback never needs scrolling ---- */
+.lesson { grid-template-rows: auto 1fr; }
+.stage { padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
+.checkbar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; max-height: 62vh; overflow-y: auto; box-shadow: 0 -1px 0 var(--line); }
+.checkbar.good, .checkbar.miss { animation: sheetUp .22s ease-out; box-shadow: 0 -8px 24px rgba(0,0,0,.08); }
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: none; } }
+.verdict p { font-size: 17px; }
+@media (prefers-reduced-motion: reduce) { .checkbar.good, .checkbar.miss { animation: none; } }
+
+/* ---- v8: one-screen lesson inside the page frame + app-style home ---- */
+html.lesson-open, html.lesson-open body { height: 100%; overflow: hidden; }
+html.lesson-open body { padding: 0; }
+html.lesson-open #home { display: none; }
+.lesson { position: relative; inset: auto; height: 100%; padding-top: 0; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
+.lesson.chat { grid-template-rows: auto minmax(0, 1fr) auto; }
+.lesson.chat .checkbar { position: static; max-height: none; animation: none; }
+.lesson.chat .stage { padding-bottom: 16px; }
+.lesson-top, .stage, .checkbar { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.lesson-top { padding-top: 12px; }
+.stage { padding-bottom: 120px; }
+.checkbar { padding-top: 16px; padding-bottom: 18px; border-top: 2px solid var(--line); box-shadow: none; }
+.checkbar.good, .checkbar.miss, .checkbar.skip { border-top-color: transparent; }
+.checkbar.skip { background: var(--surface); }
+.check-row.idle { gap: 12px; }
+.check-row .btn.wide, .btn.wide { flex: 1; max-width: none; width: 100%; margin-left: 0; padding: 15px 20px; font-size: 16px; border-radius: 16px; }
+.skipbtn { flex: none; padding: 15px 16px; font-size: 14px; color: var(--ink-soft); }
+.vhead { display: flex; align-items: center; gap: 10px; }
+.vhead strong { flex: 1; }
+.vicon { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--bg); }
+.vicon svg { width: 20px; height: 20px; }
+.checkbar.good .vicon { color: var(--sage-deep); }
+.checkbar.miss .vicon { color: var(--bad); }
+.checkbar.skip .vicon { color: var(--ink-soft); }
+.vsay { flex: none; }
+.checkbar.miss .vsay { color: var(--bad); }
+.verdict { gap: 6px; }
+.verdict .linkish { justify-self: start; padding: 2px 0; }
+.checkbar.good .btn.wide { background: var(--sage); }
+.opt { font-size: 17px; padding: 13px 14px; }
+.opt.right { border-color: var(--sage); background: var(--sage-wash); color: var(--sage-deep); }
+.opt.right .k { border-color: var(--sage); color: var(--sage-deep); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-wash); color: var(--bad); }
+.opt.wrong .k { border-color: var(--bad); color: var(--bad); }
+.answer-line.right .tile { border-color: var(--sage); color: var(--sage-deep); }
+.answer-line.wrong .tile { border-color: var(--bad); color: var(--bad); }
+
+/* home: winding path of lesson buttons */
+.path { flex-direction: column; justify-content: flex-start; gap: 22px; padding: 44px 0 18px; }
+.node { width: 72px; height: 66px; box-shadow: 0 7px 0 var(--line-deep); }
+.node svg { width: 30px; height: 30px; }
+.node.done { box-shadow: 0 7px 0 #b67f0e; }
+.node.next { box-shadow: 0 7px 0 var(--sage-deep); }
+.node:active { transform: translateY(5px); box-shadow: 0 2px 0 var(--line-deep); }
+.unit-band { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 62px); z-index: 3; }
+
+/* bottom navigation */
+body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 8; margin: 0; gap: 4px; background: var(--bg); border-top: 2px solid var(--line);
+  padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px)) max(8px, env(safe-area-inset-left, 0px)); justify-content: center; }
+.tab { flex: 1; max-width: 140px; border: 2px solid transparent; border-bottom-width: 2px; background: transparent; display: grid; justify-items: center; gap: 2px;
+  padding: 6px 4px; font-size: 11px; letter-spacing: .05em; color: var(--ink-soft); border-radius: 14px; }
+.tab svg { width: 26px; height: 26px; }
+.tab[aria-selected="true"] { border-color: var(--heather); background: var(--heather-wash); color: var(--heather); }
+@media (max-height: 640px) { .stage { padding-bottom: 104px; } .kind { font-size: 19px; } .opt { padding: 10px 12px; font-size: 16px; } }
+
+/* keyboard open: compact lesson so the check bar sits directly above the keyboard */
+html.kb-open .lesson .coach .mascot, html.kb-open .lesson .newtag { display: none; }
+html.kb-open .lesson .coach { grid-template-columns: minmax(0, 1fr); }
+html.kb-open .lesson .coach > div:first-child { display: none; }
+html.kb-open .lesson .say::before { display: none; }
+html.kb-open .lesson .kind { font-size: 18px; }
+html.kb-open .lesson .stage { padding-top: 6px; padding-bottom: 96px; }
+html.kb-open .lesson .stage-in { gap: 10px; }
+html.kb-open .typein { min-height: 52px; }
+html.kb-open .lesson .checkbar { padding-top: 10px; padding-bottom: 10px; }
+
+/* v9 polish */
+.path { gap: 26px; }
+.node-wrap.has-bubble { margin-top: 30px; }
+.unit-band { top: calc(env(safe-area-inset-top, 0px) + 64px); }
+
+/* Wortpaar-Wunder challenge */
+.wunder { margin-top: 12px; display: flex; align-items: center; gap: 14px; padding: 14px 16px; border-radius: 16px; background: var(--heather-wash); border: 2px solid var(--heather); }
+.wunder .wi { flex: none; width: 44px; height: 44px; border-radius: 12px; background: var(--heather); color: var(--on-accent); display: grid; place-items: center; box-shadow: 0 4px 0 var(--heather-deep); }
+.wunder .wi svg { width: 26px; height: 26px; }
+.wunder .wt { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.wunder .wt b { font-family: var(--font-display); font-size: 19px; font-weight: 800; color: var(--heather); line-height: 1.1; }
+.wunder .wt span { font-size: 14px; color: var(--ink-soft); }
+.wunder { flex-wrap: wrap; }
+.wbtns { display: flex; gap: 8px; width: 100%; }
+.wbtns .btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.wbtns .btn svg { width: 18px; height: 18px; }
+.sp-word { display: grid; gap: 14px; justify-items: center; text-align: center; padding-top: 6px; }
+.sp-de { font-family: var(--font-display); font-size: 30px; font-weight: 800; line-height: 1.15; text-wrap: balance; }
+.sp-ring { position: relative; width: 112px; height: 112px; }
+.sp-ring svg.r { position: absolute; inset: 0; transform: rotate(-90deg); }
+.sp-ring circle { fill: none; stroke-width: 8; }
+.sp-ring .bg { stroke: var(--line); }
+.sp-ring .fg { stroke: var(--heather); stroke-linecap: round; transition: stroke-dashoffset .1s linear, stroke .2s; }
+.sp-ring.low .fg { stroke: var(--bad); }
+.sp-big { position: absolute; inset: 14px; border-radius: 50%; background: var(--heather-wash); color: var(--heather); display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 38px; font-variant-numeric: tabular-nums; }
+.sp-ring.low .sp-big { color: var(--bad); background: var(--bad-wash); }
+.sp-hint b { color: var(--heather); }
+.sp-mic { position: absolute; inset: 14px; border-radius: 50%; border: none; cursor: pointer; background: var(--heather); color: #fff; box-shadow: 0 5px 0 var(--heather-deep); display: grid; place-items: center; }
+.sp-mic svg { width: 36px; height: 36px; }
+.sp-mic.on { background: var(--sage); box-shadow: 0 5px 0 var(--sage-deep); animation: micpulse 1.2s ease-in-out infinite; }
+.sp-mic:disabled { background: var(--line); box-shadow: 0 5px 0 var(--line-deep); color: var(--ink-soft); cursor: default; animation: none; }
+@keyframes micpulse { 50% { transform: scale(1.06); } }
+.sp-secs { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--ink-soft); font-size: 15px; }
+.sp-heard { min-height: 26px; font-size: 18px; font-weight: 600; color: var(--ink-soft); font-style: italic; }
+.sp-in { width: 100%; font: inherit; font-size: 19px; padding: 12px 14px; border: 2px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); }
+.sp-in:focus-visible { outline: 3px solid var(--heather); outline-offset: 2px; }
+.sp-hint { font-size: 14px; color: var(--ink-soft); margin: 0; }
+.sp-dots { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; }
+.sp-dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.sp-dots i.ok { background: var(--sage); } .sp-dots i.bad { background: var(--bad); } .sp-dots i.cur { background: var(--heather); }
+@media (prefers-reduced-motion: reduce) { .sp-mic.on { animation: none; } }
+.wsub { margin: 0; color: var(--ink-soft); font-size: 15px; }
+.wscore { display: flex; gap: 10px; justify-content: space-around; align-items: center; position: relative; }
+.wscore div { display: grid; justify-items: center; }
+.wscore b { font-family: var(--font-display); font-size: 26px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--heather); line-height: 1.1; }
+.wscore span { font-size: 12px; color: var(--ink-soft); font-weight: 700; text-transform: uppercase; letter-spacing: .07em; }
+.wflash { position: absolute; right: 4px; top: -8px; font-style: normal; font-weight: 800; font-size: 17px; animation: wfl 1s ease-out forwards; }
+.wflash.up { color: var(--sage-deep); } .wflash.down { color: var(--bad); }
+@keyframes wfl { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-16px); } }
+.pair.pop-in { animation: popin .22s ease-out; }
+@keyframes popin { from { transform: scale(.85); opacity: .3; } to { transform: none; opacity: 1; } }
+.pair.ok:empty { visibility: hidden; }
+@media (prefers-reduced-motion: reduce) { .pair.pop-in, .wflash { animation: none; } }
+</style>
+
+<div class="wrap" id="home">
+  <div class="topbar">
+    <span class="brand">Calluna Lingo</span>
+    <div class="stats">
+      <span class="stat fire off" id="stStreak" title="Streak"></span>
+      <span class="stat xp" id="stXp" title="XP gesamt"></span>
+      <button class="sound-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="Englisch vorlesen an/aus"></button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div id="heroMascot"></div>
+    <div class="say" id="heroSay"></div>
+  </div>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-v="Path" aria-selected="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5 3 9.5V21h6.5v-6h5v6H21V9.5z"/></svg><span>Lernen</span></button>
+    <button class="tab" role="tab" data-v="Talk" aria-selected="false" hidden><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>Gespräch</span></button>
+    <button class="tab" role="tab" data-v="Gloss" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4.5C6.8 3.6 9.5 3.9 11.2 5.2V20c-1.8-1.2-4.4-1.5-7.2-.8zM20 4.5c-2.8-.9-5.5-.6-7.2.7V20c1.8-1.2 4.4-1.5 7.2-.8z"/></svg><span>Vokabeln</span></button>
+    <button class="tab" role="tab" data-v="Ach" aria-selected="false"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10v3h3v2a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.7V18h3v3H8v-3h3v-2.3A5 5 0 0 1 8.6 13 5 5 0 0 1 4 8V6h3z"/></svg><span>Erfolge</span></button>
+  </div>
+
+  <section id="viewPath">
+    <div class="goal">
+      <div class="goal-head"><span>Tagesziel</span><span id="goalTxt">0 / 30 XP</span></div>
+      <div class="meter"><i id="goalBar"></i></div>
+      <div class="quick">
+        <button class="btn small heather" id="btnReview" type="button">Wiederholen</button>
+        <button class="btn small ghost" id="btnMistakes" type="button">Fehler üben</button>
+      </div>
+    </div>
+    <div class="wunder">
+      <span class="wi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2 4 14h6.5l-1.5 8 9.5-12.5H12z"/></svg></span>
+      <div class="wt"><b>Wortpaar-Wunder</b><span>Tippen: 60 Sek. Paare zuordnen · Sprechen: 15 Wörter, 10 Sek. je Wort</span><span id="wBest"></span></div>
+      <div class="wbtns"><button class="btn small ghost" id="btnWunder" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 11V5a2 2 0 0 1 4 0v5h1a2 2 0 0 1 2 1.2l.1.3H17a2 2 0 0 1 2 2v.5l-1 5.5a2 2 0 0 1-2 1.5h-5a2 2 0 0 1-1.6-.8L5.6 16a1.5 1.5 0 0 1 2.2-2L9 15z"/></svg>Tippen</button><button class="btn small heather" id="btnSpeak" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg>Sprechen</button></div>
+    </div>
+    <div id="units"></div>
+  </section>
+
+  <section id="viewTalk" hidden>
+    <div class="max-intro"><strong>Rollenspiel mit KI</strong>
+      <p>Du schreibst auf Englisch mit einer Figur aus dem Gärtnerei-Alltag in Nordamerika. Nach jeder Nachricht bekommst du einen kurzen Tipp auf Deutsch, am Ende eine Bewertung und XP.</p>
+    </div>
+    <div class="convs" id="convList"></div>
+  </section>
+
+  <section id="viewGloss" hidden>
+    <div class="gloss">
+      <input class="search" id="q" type="search" placeholder="Suchen: Stutzen, liner, Botrytis …" autocomplete="off" aria-label="Begriffe suchen">
+      <div id="glossList" class="gloss"></div>
+    </div>
+  </section>
+
+  <section id="viewAch" hidden>
+    <div class="statgrid" id="statGrid"></div>
+    <div class="achs" id="achList"></div>
+  </section>
+  <p class="sync" id="sync">Fortschritt wird geladen …</p>
+</div>
+
+<div class="lesson" id="lesson" hidden>
+  <div class="lesson-top">
+    <button class="close" id="quit" type="button" aria-label="Beenden"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="lbar" id="lbarWrap"><i id="lbar"></i></div>
+    <span class="hearts" id="hearts"></span>
+  </div>
+  <div class="stage"><div class="stage-in" id="stage"></div></div>
+  <div class="checkbar" id="checkbar"><div class="check-in" id="checkIn"></div></div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const UNITS = [
+ { id:"u1", de:"Die Pflanze", en:"The plant", words:[
+  ["die Besenheide","heather",["common heather","calluna","scotch heather"],"Calluna vulgaris"],
+  ["der Trieb","shoot",["stem"]],
+  ["die Triebspitze","shoot tip",["tip"]],
+  ["die Knospe","bud",[],"Beauty Ladies sind Knospenblüher – die Knospe öffnet sich nicht"],
+  ["die Blüte","flower",["bloom","blossom"],"Achtung: bud = die Knospe"],
+  ["das Laub","foliage",["leaves"]],
+  ["die Wurzel","root",[]],
+  ["der Wurzelballen","root ball",["rootball"]],
+  ["die Sorte","variety",["cultivar"]],
+  ["die Mutterpflanze","stock plant",["mother plant"]],
+  ["der Steckling","cutting",[]],
+  ["die Jungpflanze","liner",["young plant","plug"]],
+  ["die Fertigware","finished plant",["finished plants","finished product"]],
+  ["der Knospenblüher","bud bloomer",["bud-flowering heather"]]
+ ], sentences:[
+  ["Die Knospen öffnen sich nicht.","The buds do not open."],
+  ["Diese Sorte hat gelbes Laub.","This variety has yellow foliage."],
+  ["Wir brauchen gesunde Mutterpflanzen.","We need healthy stock plants."]
+ ]},
+ { id:"u2", de:"Vermehrung", en:"Propagation", words:[
+  ["die Vermehrung","propagation",[]],
+  ["der Jungpflanzenbetrieb","propagator",["young plant producer","liner producer"]],
+  ["der Fertigwarenbetrieb","finisher",["finished grower","finishing grower"]],
+  ["der unbewurzelte Steckling","unrooted cutting",["urc"],"Kurz: URC"],
+  ["stecken","stick",["to stick"],"Stecklinge in die Platte stecken"],
+  ["die Bewurzelung","rooting",[]],
+  ["das Bewurzelungshormon","rooting hormone",[]],
+  ["die Anzuchtplatte","plug tray",["cell tray","tray"]],
+  ["topfen","pot up",["to pot up","transplant","potting"]],
+  ["das Gewächshaus","greenhouse",[]],
+  ["der Folientunnel","poly house",["hoop house","polyhouse"]],
+  ["der Sprühnebel","mist",[]],
+  ["abhärten","harden off",["to harden off"]],
+  ["die Kurzkultur","short-season crop",["short crop","short culture","spring crop"]],
+  ["die überjährige Kultur","overwintered crop",["overwintered culture"]]
+ ], sentences:[
+  ["Die Stecklinge bewurzeln in drei Wochen.","The cuttings root in three weeks."],
+  ["Wir topfen die Jungpflanzen im April.","We pot up the liners in April."],
+  ["Wir kaufen die Liner beim Jungpflanzenbetrieb.","We buy the liners from the propagator."]
+ ]},
+ { id:"u3", de:"Substrat & Wasser", en:"Growing medium & water", words:[
+  ["das Substrat","growing medium",["substrate","growing mix","potting mix","media"]],
+  ["der Torf","peat",["peat moss"]],
+  ["der Weißtorf","white peat",["sphagnum peat"]],
+  ["die Luftkapazität","air-filled porosity",["air porosity","afp","air space"],"Mindestens 15 %"],
+  ["die Leitfähigkeit","electrical conductivity",["ec","conductivity"]],
+  ["der pH-Wert","pH",["ph value"]],
+  ["der Kalk","lime",["limestone"]],
+  ["das Gießwasser","irrigation water",[]],
+  ["die Staunässe","waterlogging",["waterlogged"]],
+  ["die Drainage","drainage",[]],
+  ["verschlämmen","silt up",["compact","to silt up"]],
+  ["bewässern","irrigate",["water","to irrigate","to water"]],
+  ["die Tropfbewässerung","drip irrigation",[]],
+  ["die Überkopfbewässerung","overhead irrigation",[]],
+  ["die Ebbe-Flut-Bewässerung","ebb and flood",["ebb and flow","flood floor"]]
+ ], sentences:[
+  ["Der pH-Wert ist zu hoch.","The pH is too high."],
+  ["Das Substrat braucht mehr Luft.","The growing medium needs more air."],
+  ["Wir wässern früh am Morgen.","We water early in the morning."]
+ ]},
+ { id:"u4", de:"Düngung", en:"Feeding", words:[
+  ["der Dünger","fertilizer",["feed"]],
+  ["der Depotdünger","controlled-release fertilizer",["crf","slow-release fertilizer"]],
+  ["die Flüssigdüngung","liquid feed",["fertigation","liquid feeding"]],
+  ["die Grunddüngung","starter charge",["base charge","pre-plant charge","base fertilizer"]],
+  ["der Stickstoff","nitrogen",[]],
+  ["der Phosphor","phosphorus",[]],
+  ["das Kalium","potassium",["potash"]],
+  ["die Spurenelemente","micronutrients",["trace elements"]],
+  ["der Nährstoffmangel","nutrient deficiency",[]],
+  ["der Salzgehalt","salt level",["soluble salts","salinity"]],
+  ["auswaschen","leach",["to leach","leaching"]],
+  ["kalibetont","high-potassium",["high potassium","potassium-heavy","high k"]],
+  ["die Blattdüngung","foliar feed",["foliar feeding","foliar fertilizer"]]
+ ], sentences:[
+  ["Nach dem Knospenansatz düngen wir weniger.","After bud set we feed less."],
+  ["Zu viel Stickstoff gibt grüne Spitzen.","Too much nitrogen causes green tips."],
+  ["Der Regen hat die Nährstoffe ausgewaschen.","The rain leached the nutrients."]
+ ]},
+ { id:"u5", de:"Kulturführung", en:"Crop management", words:[
+  ["stutzen","pinch",["to pinch","pinching"]],
+  ["entspitzen","tip",["soft pinch","to tip","tipping"]],
+  ["die Blüteninduktion","flower induction",["bud initiation","flower initiation"]],
+  ["rücken","space",["to space","spacing","space out"]],
+  ["der Endabstand","final spacing",[]],
+  ["der Bestand","crop",["stand"]],
+  ["der Kulturplan","crop schedule",["production schedule","growing schedule"]],
+  ["die Kalenderwoche","week number",["week","calendar week"],"KW 38 = week 38"],
+  ["die Stellfläche","growing area",["bed","growing bed","production area"]],
+  ["der Hemmstoff","growth regulator",["pgr","plant growth regulator"]],
+  ["das Vlies","frost cloth",["fleece","row cover"]],
+  ["die Winterhärte","winter hardiness",["hardiness","cold hardiness"]],
+  ["der Spätfrost","late frost",["spring frost"]],
+  ["die Gleichmäßigkeit","uniformity",[]],
+  ["der Ausfall","shrink",["loss","losses","crop loss"],"NA-Begriff: shrink"]
+ ], sentences:[
+  ["Wir stutzen die frühen Sorten Ende Mai.","We pinch the early varieties in late May."],
+  ["Bitte rückt die Töpfe diese Woche.","Please space the pots this week."],
+  ["Der Bestand ist sehr gleichmäßig.","The crop is very uniform."]
+ ]},
+ { id:"u6", de:"Pflanzenschutz", en:"Crop protection", words:[
+  ["der Pflanzenschutz","crop protection",["plant protection","pest control"]],
+  ["das Fungizid","fungicide",[]],
+  ["das Insektizid","insecticide",[]],
+  ["der Grauschimmel","gray mold",["botrytis","grey mould"]],
+  ["die Wurzelfäule","root rot",[]],
+  ["der Echte Mehltau","powdery mildew",[]],
+  ["die Trauermücke","fungus gnat",[]],
+  ["die Blattlaus","aphid",[]],
+  ["die Spinnmilbe","spider mite",[]],
+  ["der Wirkstoff","active ingredient",["ai"]],
+  ["die Wirkstoffgruppe","mode-of-action group",["moa group","fungicide group"]],
+  ["die Zulassung","registration",["label"],"In Kanada: PMRA"],
+  ["der Befall","infestation",["infection"]],
+  ["das Schadbild","symptoms",["damage symptoms"]],
+  ["die Nützlinge","beneficials",["beneficial insects","biocontrol agents"]],
+  ["das Pflanzengesundheitszeugnis","phytosanitary certificate",["phyto","phyto certificate"]]
+ ], sentences:[
+  ["Wir spritzen alle vierzehn Tage gegen Botrytis.","We spray against Botrytis every fourteen days."],
+  ["Die Pflanzen haben Thripse.","The plants have thrips."],
+  ["Dieses Mittel ist in Kanada nicht zugelassen.","This product is not registered in Canada."]
+ ]},
+ { id:"u7", de:"Qualität & Marke", en:"Quality & brand", words:[
+  ["das Qualitätsmerkmal","quality attribute",["quality criterion","quality marker"]],
+  ["die Triebdichte","branching",["shoot density"]],
+  ["der Knospenbesatz","bud set",["bud count"]],
+  ["die Leuchtkraft","colour intensity",["brightness","vibrancy"]],
+  ["das Topf-Pflanzen-Verhältnis","plant-to-pot ratio",["pot-to-plant ratio"]],
+  ["die grünen Spitzen","green tips",[]],
+  ["die Haltbarkeit","shelf life",["longevity","keeping quality"]],
+  ["das Sortiment","assortment",["product range","range","product mix"]],
+  ["die Farbmischung","colour mix",[]],
+  ["die Lizenz","licence",["license"]],
+  ["die Lizenzgebühr","royalty",["royalties"]],
+  ["der Sortenschutz","plant breeders' rights",["pbr","plant breeders rights","plant breeder's rights","plant patent"]],
+  ["die Marke","brand",[]],
+  ["der Lizenznehmer","licensee",["licenced grower","licensed grower"]],
+  ["der Pflanzenpass","plant passport",[],"EU-Dokument"]
+ ], sentences:[
+  ["Samona hat die beste Haltbarkeit.","Samona has the best shelf life."],
+  ["Pro Pflanze zahlen wir eine Lizenzgebühr.","We pay a royalty per plant."],
+  ["Die Farbe muss intensiver sein.","The colour must be more intense."]
+ ]},
+ { id:"u8", de:"Handel & Logistik", en:"Trade & logistics", words:[
+  ["der Großhandel","wholesale",[]],
+  ["der Einzelhandel","retail",[]],
+  ["der Baumarkt","big-box store",["big box","home improvement store"]],
+  ["das Gartencenter","garden centre",[]],
+  ["der unabhängige Fachhandel","independent garden centre",["igc"]],
+  ["die Vorbestellung","pre-book",["prebook","pre-order","booking"]],
+  ["die Lieferung","shipment",["delivery"]],
+  ["die Lieferwoche","ship week",["shipping week"]],
+  ["das Etikett","plant tag",["tag","label"]],
+  ["der CC-Container","Danish cart",["danish trolley","cc trolley","cc cart","danish rack"]],
+  ["die Palette","pallet",[]],
+  ["die Mindestbestellmenge","minimum order quantity",["moq","minimum order"]],
+  ["der Zoll (Behörde)","customs",[]],
+  ["die Lieferkette","supply chain",[]],
+  ["der Abverkauf","sell-through",["sales"]],
+  ["die Verkaufsförderung","merchandising",["sales promotion","promotion"]],
+  ["das Verkaufsgebiet","territory",["sales territory"]]
+ ], sentences:[
+  ["Der Kunde möchte zweitausend Pflanzen vorbestellen.","The customer wants to pre-book two thousand plants."],
+  ["Die Lieferung ist verspätet.","The shipment is delayed."],
+  ["Wir liefern an Gartencenter in Kanada.","We ship to garden centres in Canada."]
+ ]},
+ { id:"u9", de:"Nordamerika & Business", en:"North America & business", words:[
+  ["der Zoll (Maß, 2,54 cm)","inch",[]],
+  ["der 4,5-Zoll-Topf","4.5-inch pot",["4.5 inch pot"],"≈ 11-cm-Topf"],
+  ["die Gallone","gallon",[],"1-gal-Topf ≈ 3,8 l"],
+  ["der Acre","acre",[],"≈ 4.047 m² bzw. 0,4 ha"],
+  ["der Gärtner (Produzent)","grower",[]],
+  ["der Kulturberater","technical advisor",["crop consultant","grower consultant","technical rep"]],
+  ["der Außendienst","field sales",["outside sales"]],
+  ["die Fachmesse","trade show",[]],
+  ["der Messestand","booth",["trade show booth"]],
+  ["das Angebot","quote",["quotation","offer"]],
+  ["der Geschäftsführer","managing director",["general manager","ceo"]],
+  ["die Arbeitserlaubnis","work permit",[]],
+  ["das Gemeinschaftsunternehmen","joint venture",["jv"]]
+ ], sentences:[
+  ["Kannst du mir ein Angebot schicken?","Can you send me a quote?"],
+  ["Wir treffen uns im Januar auf der Messe.","We meet at the trade show in January."],
+  ["Ich bin der Growth Manager für Nordamerika.","I am the Growth Manager for North America."]
+ ]}
+ ,{ id:"u10", de:"Mutterpflanzen & Stecktermine", en:"Stock plants & timing", words:[
+  ["der Rückschnitt","trim",["trimming","cutback","cut-back"],"Mutterpflanzen: um den 22. Juli, leicht"],
+  ["der Neuaustrieb","regrowth",["new growth","flush"]],
+  ["die Stecklingsausbeute","cutting yield",["yield"]],
+  ["der Mutterpflanzenbestand","motherstock",["mother stock","stock plant program","stock block"],"Chris schreibt motherstock / MS"],
+  ["abgehärtet","hardened",[],"Zu spät geschnitten = Schock"],
+  ["das Ethephon","ethephon",["florel","cerone"],"Florel (Kanada) = Cerone (EU)"],
+  ["die Photoperiode","photoperiod",["day length"]],
+  ["die Zusatzbelichtung","supplemental lighting",["grow lights","led lighting","leds"]],
+  ["der Harnstoff","urea",[]],
+  ["das Kalziumnitrat","calcium nitrate",[]],
+  ["die Fehlmenge","shortfall",["shortage"]],
+  ["zukaufen","buy in",["to buy in","source","purchase"]],
+  ["der Stecktermin","sticking date",["stick date","propagation date","stick week"]],
+  ["versandfertig","ready to ship",["ready for dispatch"]],
+  ["der Platzmangel","space constraints",["lack of space","space constraint"]]
+ ], sentences:[
+  ["Der Rückschnitt war zu spät und zu hart.","The trim was too late and too hard."],
+  ["Wir müssen mehr Stecklinge zukaufen.","We need to buy in more cuttings."],
+  ["Im Januar bewurzeln die Stecklinge sehr gut.","Cuttings root very well in January."],
+  ["Wir schneiden die Mutterpflanzen Ende Juli.","We trim the stock plants in late July."]
+ ]}
+];
+const LEVELS = 4;
+const DAILY_GOAL = 30;
+const VISIT = "2000-01-01";
+const ALL = [];
+UNITS.forEach(u => u.words.forEach((w, i) => ALL.push({ id: u.id + "_" + i, unit: u.id, de: w[0], en: w[1], alt: w[2] || [], note: w[3] || "" })));
+const BYID = Object.fromEntries(ALL.map(w => [w.id, w]));
+
+/* ---------- state + persistence ---------- */
+const today = () => { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); };
+const fresh = () => ({ v: 2, xp: 0, streak: 0, lastDay: "", dayXp: 0, day: "", units: {}, words: {}, sound: true, noListenUntil: 0, ach: {}, lessons: 0, perfect: 0, convs: 0, bestCombo: 0, bestPairs: 0, challenges: 0, bestSpeak: 0 });
+let S = fresh();
+let docRef = null;
+const LS = "calluna-lingo-v1";
+function loadLocal() { try { const raw = localStorage.getItem(LS); if (raw) return JSON.parse(raw); } catch (e) {} return null; }
+function merge(x) { const f = fresh(); if (!x || typeof x !== "object") return f; return { ...f, ...x, units: { ...(x.units || {}) }, words: { ...(x.words || {}) }, ach: { ...(x.ach || {}) } }; }
+let saving = false, pending = false;
+async function save() {
+  try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {}
+  if (!docRef) return;
+  if (saving) { pending = true; return; }
+  saving = true;
+  try { await docRef.set(JSON.parse(JSON.stringify(S))); setSync("Fortschritt gespeichert – auf allen deinen Geräten."); }
+  catch (e) { setSync("Online-Speichern gerade nicht möglich – lokal gesichert."); }
+  saving = false;
+  if (pending) { pending = false; save(); }
+}
+function setSync(t) { $("sync").textContent = t; }
+async function initStore() {
+  const local = loadLocal();
+  if (local) S = merge(local);
+  render();
+  try {
+    if (!window.claude || !window.claude.use) { setSync("Fortschritt wird in diesem Browser gespeichert."); return; }
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    const uid = user ? await user.id() : null;
+    if (!db || !uid) { setSync("Fortschritt wird in diesem Browser gespeichert."); return; }
+    docRef = db.doc("data/users/" + uid + "/progress");
+    const snap = await docRef.get();
+    if (snap.exists) {
+      const remote = merge(snap.data());
+      if (!local || remote.xp >= S.xp) S = remote; else save();
+    } else if (local) save();
+    setSync("Fortschritt wird online gespeichert – auf allen deinen Geräten.");
+    if (!lessonActive && !chatActive) render();
+  } catch (e) { setSync("Fortschritt wird in diesem Browser gespeichert."); }
+}
+function rollDay() { const t = today(); if (S.day !== t) { S.day = t; S.dayXp = 0; } }
+function streakAlive() {
+  if (!S.lastDay) return 0;
+  const diff = Math.round((new Date(today()) - new Date(S.lastDay)) / 864e5);
+  return diff <= 1 ? S.streak : 0;
+}
+function addXp(n) {
+  rollDay();
+  S.xp += n; S.dayXp += n;
+  const t = today();
+  if (S.lastDay !== t) {
+    const diff = S.lastDay ? Math.round((new Date(t) - new Date(S.lastDay)) / 864e5) : 99;
+    S.streak = diff === 1 ? S.streak + 1 : 1;
+    S.lastDay = t;
+  }
+}
+const ws = id => S.words[id] || { s: 0, n: 0 };
+function bump(id, ok, soft) {
+  const w = { ...ws(id) };
+  w.n = (w.n || 0) + 1;
+  w.s = ok ? Math.min(5, (w.s || 0) + 1) : Math.max(0, (w.s || 0) - (soft ? 1 : 2));
+  w.t = today();
+  S.words[id] = w;
+}
+const solidCount = () => ALL.filter(w => ws(w.id).s >= 3).length;
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const BRIT = [["colour","color"],["centre","center"],["mould","mold"],["grey","gray"],["fertiliser","fertilizer"],["licence","license"],["licenced","licensed"]];
+function norm(s) {
+  let t = String(s).toLowerCase().replace(/[’`]/g, "'").replace(/[-/]/g, " ").replace(/[.,!?;:()"]/g, " ").replace(/'s\b/g, "s").replace(/'/g, "");
+  t = " " + t.replace(/\s+/g, " ").trim() + " ";
+  BRIT.forEach(([b, a]) => { t = t.split(" " + b + " ").join(" " + a + " ").split(" " + b + "s ").join(" " + a + "s "); });
+  return t.trim().replace(/^(the|a|an|to) /, "");
+}
+function lev(a, b) {
+  const m = a.length, n = b.length; if (Math.abs(m - n) > 1) return 2;
+  const d = Array.from({ length: m + 1 }, (_, i) => [i]);
+  for (let j = 1; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) for (let j = 1; j <= n; j++) d[i][j] = Math.min(d[i-1][j] + 1, d[i][j-1] + 1, d[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1));
+  return d[m][n];
+}
+function judgeTyped(input, w) {
+  const x = norm(input); if (!x) return { ok: false };
+  const acc = [w.en, ...w.alt].map(norm);
+  if (acc.includes(x)) return { ok: true };
+  if (acc.some(a => a.length >= 5 && lev(a, x) === 1)) return { ok: true, typo: true };
+  const other = ALL.find(o => o.id !== w.id && [o.en, ...o.alt].map(norm).includes(x));
+  return { ok: false, other };
+}
+const daysToVisit = () => Math.round((new Date(VISIT) - new Date(today())) / 864e5);
+
+/* ---------- sound: recorded clips (like a native app), unlocked on first touch ---------- */
+// Every English term, sentence and tile is pre-recorded in a North American voice; German prompts in a German voice.
+// Played through real <audio> elements, which also work on iPhone with the silent switch on.
+const AUD = {"en|heather":"d6bb7e7684","de|die besenheide":"bd1ee0781c","en|shoot":"7686f6f16f","de|der trieb":"38e20a7b89","en|shoot tip":"3e591881af","de|die triebspitze":"fbcb67a3f4","en|bud":"10c189a921","de|die knospe":"e47cafdc38","en|flower":"4e391809a4","de|die blüte":"4ef75baadc","en|foliage":"b332f73297","de|das laub":"f231158da2","en|root":"760e2fb610","de|die wurzel":"0274fc0c03","en|root ball":"ba55ea0c40","de|der wurzelballen":"7229535263","en|variety":"2a7f621009","de|die sorte":"88ef1f9e25","en|stock plant":"0b6d4fe54c","de|die mutterpflanze":"0271d3d564","en|cutting":"c21a221867","de|der steckling":"51a3069ada","en|liner":"b6c1101cc8","de|die jungpflanze":"637570f90d","en|finished plant":"728d0d75e7","de|die fertigware":"6dd8e62814","en|bud bloomer":"deddd7f121","de|der knospenblüher":"b6ab8e2abf","en|the buds do not open.":"e4cbcf8c10","de|die knospen öffnen sich nicht.":"8d6fdf30e5","en|the":"5ddefcde75","en|buds":"817ffec12b","en|do":"fccdeb2c12","en|not":"c85169073f","en|open":"482e0de5a2","en|this variety has yellow foliage.":"14738c1d51","de|diese sorte hat gelbes laub.":"9a73cf886b","en|this":"fad563d0da","en|has":"fd321e0b17","en|yellow":"26705445f0","en|we need healthy stock plants.":"794fb9e054","de|wir brauchen gesunde mutterpflanzen.":"6f92792ff6","en|we":"dd1aae3015","en|need":"0aa9b7d3b8","en|healthy":"fb8d2608ec","en|stock":"b8f93164e2","en|plants":"b910da0c4e","en|propagation":"8a835a9f43","de|die vermehrung":"cdc84d2cda","en|propagator":"8840d753e7","de|der jungpflanzenbetrieb":"314b0bd9bb","en|finisher":"d6ee8bcf37","de|der fertigwarenbetrieb":"ebeaf6dbfe","en|unrooted cutting":"05830799c5","de|der unbewurzelte steckling":"5826572e7d","en|stick":"e1c4592c3a","de|stecken":"d311d9bb30","en|rooting":"cefc0c74eb","de|die bewurzelung":"cc908f555c","en|rooting hormone":"cfcd94485a","de|das bewurzelungshormon":"7ad7e6d4f4","en|plug tray":"fef35a4cd9","de|die anzuchtplatte":"62e9cb57a2","en|pot up":"e8070cc7ce","de|topfen":"8ae97d998c","en|greenhouse":"48a2b5d44a","de|das gewächshaus":"e9ba2a2a99","en|poly house":"2937186557","de|der folientunnel":"1f2c9636dc","en|mist":"64918b97f4","de|der sprühnebel":"c3029af301","en|harden off":"e02a89bc5c","de|abhärten":"76fb668114","en|short-season crop":"e633f21c86","de|die kurzkultur":"3e2ccf1e18","en|overwintered crop":"fef916fa4e","de|die überjährige kultur":"47dde392d8","en|the cuttings root in three weeks.":"d2ff19c6cd","de|die stecklinge bewurzeln in drei wochen.":"8ef2f97a28","en|cuttings":"1f3e815a39","en|in":"ead87a7ce3","en|three":"af56e89de9","en|weeks":"a934c4aa22","en|we pot up the liners in april.":"179741b755","de|wir topfen die jungpflanzen im april.":"229d26b620","en|pot":"e66072e9a3","en|up":"7bc045395f","en|liners":"83b20a210b","en|april":"7cea5aa7f7","en|is":"e8c78a8072","en|our":"124ca8b14f","en|growing medium":"e376bd491e","de|das substrat":"f7ede136e6","en|peat":"a19e00ba33","de|der torf":"af06ce5878","en|white peat":"e472b5a67f","de|der weißtorf":"e60205c731","en|air-filled porosity":"94c410e254","de|die luftkapazität":"f49c2ad480","en|electrical conductivity":"f8e69cd446","de|die leitfähigkeit":"c2904f9cc7","en|ph":"db40c2849f","de|der ph-wert":"e24af16201","en|lime":"623fa0dad4","de|der kalk":"1a0ef5b779","en|irrigation water":"15f04bb83c","de|das gießwasser":"411a6648b3","en|waterlogging":"bb965a2bcd","de|die staunässe":"eab9bc570f","en|drainage":"742c2f42a5","de|die drainage":"69cb731bcf","en|silt up":"f9004cac31","de|verschlämmen":"5f680d357e","en|irrigate":"ea9f1057b1","de|bewässern":"51f4498ef1","en|drip irrigation":"ef41abd779","de|die tropfbewässerung":"61083d9fe1","en|overhead irrigation":"77a41044c4","de|die überkopfbewässerung":"7ee5e03031","en|ebb and flood":"39547a73dc","de|die ebbe-flut-bewässerung":"c5bef87123","en|the ph is too high.":"4baa98ad15","de|der ph-wert ist zu hoch.":"3bec5999d1","en|too":"29f582f223","en|high":"8023be1f27","en|the growing medium needs more air.":"5b69d53c11","de|das substrat braucht mehr luft.":"9481a4386a","en|growing":"b00ee692ab","en|medium":"c9d1cf0c66","en|needs":"33818e8f48","en|more":"5bd621f778","en|air":"a902166376","en|we water early in the morning.":"c04380800a","de|wir wässern früh am morgen.":"a920781692","en|water":"fcb29491f4","en|early":"33368c1d7b","en|morning":"9bd866038b","en|fertilizer":"7cf85143dc","de|der dünger":"8cb84e25d2","en|controlled-release fertilizer":"e7d2db7644","de|der depotdünger":"f0ce9f984f","en|liquid feed":"a86ff466d0","de|die flüssigdüngung":"0625440b0e","en|starter charge":"bd4df4bd66","de|die grunddüngung":"081b29189e","en|nitrogen":"5c526b2be6","de|der stickstoff":"1c7a52f5c8","en|phosphorus":"de3de3491e","de|der phosphor":"92b7755ee0","en|potassium":"5db3f5eda3","de|das kalium":"d03a60892e","en|micronutrients":"f6a5558769","de|die spurenelemente":"948cdf74a9","en|nutrient deficiency":"3df055fac6","de|der nährstoffmangel":"a7269aad3f","en|salt level":"ae2577ccb0","de|der salzgehalt":"6b3eb9fde0","en|leach":"b6ccb18c32","de|auswaschen":"a2c46bf20f","en|high-potassium":"60b510d97a","de|kalibetont":"64b5633473","en|foliar feed":"0f57e5994c","de|die blattdüngung":"260cc27cd8","en|after bud set we feed less.":"2b6736b38b","de|nach dem knospenansatz düngen wir weniger.":"5ac6b5f8ff","en|after":"2217a2dc3f","en|set":"d0b6fc3432","en|feed":"c4509d8a70","en|less":"9b5c7ea042","en|too much nitrogen causes green tips.":"73a245f8b6","de|zu viel stickstoff gibt grüne spitzen.":"63d1affd33","en|much":"b11a557188","en|causes":"7c875293ae","en|green":"c5bc979881","en|tips":"f02c1fea95","en|the rain leached the nutrients.":"7f11d887b1","de|der regen hat die nährstoffe ausgewaschen.":"8fc6d44ff9","en|rain":"4ef5158b03","en|leached":"dced499789","en|nutrients":"025ad15cf8","en|pinch":"f049d17ea8","de|stutzen":"205bfadae5","en|tip":"d98d5486c8","de|entspitzen":"b25243aa27","en|flower induction":"bc72900760","de|die blüteninduktion":"5fb6e1b7bb","en|space":"b7f9c73fa3","de|rücken":"28af6a97dd","en|final spacing":"cccbb585c3","de|der endabstand":"01a9eccb3c","en|crop":"f92f2bb97e","de|der bestand":"173c0f1125","en|crop schedule":"0a6bbfd0a8","de|der kulturplan":"74a8b3ed2c","en|week number":"9180cc08f5","de|die kalenderwoche":"c5f2f820ad","en|growing area":"58aeddb475","de|die stellfläche":"eb688ac077","en|growth regulator":"905869fe33","de|der hemmstoff":"d98cc2a6e0","en|frost cloth":"47b869d38d","de|das vlies":"33d1ced94c","en|winter hardiness":"8c337a2d07","de|die winterhärte":"31978c5609","en|late frost":"808ff8928a","de|der spätfrost":"c47f59abff","en|uniformity":"9295d35637","de|die gleichmäßigkeit":"32b246c0de","en|shrink":"a1ffdf8d11","de|der ausfall":"4589e2dc7d","en|we pinch the early varieties in late may.":"74036cd8d8","de|wir stutzen die frühen sorten ende mai.":"e9987ff305","en|varieties":"29156d43f2","en|late":"5f15d2d8aa","en|may":"84bcecf00a","en|please space the pots this week.":"d080457d7b","de|bitte rückt die töpfe diese woche.":"4b08f41095","en|please":"8daad4cbf7","en|pots":"5d3f69f0c7","en|week":"fc17a90d23","en|the crop is very uniform.":"04301fb6a9","de|der bestand ist sehr gleichmäßig.":"9061b54885","en|very":"1e119d7c84","en|uniform":"93a58d597e","en|crop protection":"b9327bbb53","de|der pflanzenschutz":"1737542b20","en|fungicide":"6878d95a77","de|das fungizid":"1e2feb6c27","en|insecticide":"bdedeac3ef","de|das insektizid":"6994bcb6ed","en|gray mold":"09aadc7dc4","de|der grauschimmel":"8b7fdf1dc2","en|root rot":"9b7d465732","de|die wurzelfäule":"73ea0c3f76","en|powdery mildew":"4907e97c49","de|der echte mehltau":"468aaf768f","en|fungus gnat":"5612580a1c","de|die trauermücke":"1526f48e1a","en|aphid":"71c542778b","de|die blattlaus":"320c15e433","en|spider mite":"0644c95711","de|die spinnmilbe":"f70c040160","en|active ingredient":"668376de27","de|der wirkstoff":"f443a66b98","en|mode-of-action group":"1bc6593d13","de|die wirkstoffgruppe":"a1ffe66c01","en|registration":"8af3dd48b6","de|die zulassung":"727233215c","en|infestation":"82c4d7a34d","de|der befall":"cd3a01e0a7","en|symptoms":"25b7c7a603","de|das schadbild":"6f38f49341","en|beneficials":"4bed6bca5a","de|die nützlinge":"0aa5b1cc8c","en|phytosanitary certificate":"7fc3d95b50","de|das pflanzengesundheitszeugnis":"ea88b23d1f","en|we spray against botrytis every fourteen days.":"fd9eee64e8","de|wir spritzen alle vierzehn tage gegen botrytis.":"2e40252862","en|spray":"5d5380c5f4","en|against":"1d509e8a50","en|botrytis":"c91226b4d2","en|every":"b064c26790","en|fourteen":"130c6e5767","en|days":"946047c2ef","en|the plants have thrips.":"0dcddaf170","de|die pflanzen haben thripse.":"927b9dcaaf","en|have":"c2fda242d5","en|thrips":"2d82a022a1","en|this product is not registered in canada.":"876cca2152","de|dieses mittel ist in kanada nicht zugelassen.":"d2bf9ff13a","en|product":"591dd78418","en|registered":"9e2334db18","en|canada":"e0badf8699","en|quality attribute":"427adddf86","de|das qualitätsmerkmal":"9ffadd7ed8","en|branching":"cdd1899958","de|die triebdichte":"47a02c5d2e","en|bud set":"b9aa657716","de|der knospenbesatz":"52d4e8e0be","en|colour intensity":"8be4dfc934","de|die leuchtkraft":"08d11f5e16","en|plant-to-pot ratio":"824db19cb2","de|das topf-pflanzen-verhältnis":"98691720b5","en|green tips":"b96f80a840","de|die grünen spitzen":"bc89cbfcbb","en|shelf life":"88221ebe38","de|die haltbarkeit":"a58f5f0a59","en|assortment":"3db928c399","de|das sortiment":"3b321c78ed","en|colour mix":"e98f4cdac3","de|die farbmischung":"2d5ced6528","en|licence":"f9b97ced77","de|die lizenz":"ee0ba48490","en|royalty":"b65df21c7e","de|die lizenzgebühr":"fb5e388a8a","en|plant breeders' rights":"5d30f8a3b7","de|der sortenschutz":"7ce5e14f6a","en|brand":"206e32b1e9","de|die marke":"3e92d830a6","en|licensee":"2af3d7a3b0","de|der lizenznehmer":"bd74900f0e","en|plant passport":"bf6c8c5afa","de|der pflanzenpass":"f7400e380f","en|samona has the best shelf life.":"9ea899ff21","de|samona hat die beste haltbarkeit.":"df67e3f40b","en|samona":"55e80f4f05","en|best":"38621adbfc","en|shelf":"bcacf94f40","en|life":"d78438a3c3","en|we pay a royalty per plant.":"e94af73e86","de|pro pflanze zahlen wir eine lizenzgebühr.":"3c6f4c1613","en|pay":"82be7a8bbb","en|a":"c1a26ae596","en|per":"bf28d93e79","en|plant":"addb266284","en|the colour must be more intense.":"a5d180d200","de|die farbe muss intensiver sein.":"6c90488534","en|colour":"efd6675f5d","en|must":"b8caa98a97","en|be":"67fd9e3369","en|intense":"e3717944c0","en|wholesale":"ce9bf8e806","de|der großhandel":"d3ab26f367","en|retail":"6d9e0e3184","de|der einzelhandel":"6d905fc580","en|big-box store":"f372ed8097","de|der baumarkt":"716f24f174","en|garden centre":"a99577b274","de|das gartencenter":"61bef6cb61","en|independent garden centre":"546d6912de","de|der unabhängige fachhandel":"546a0ea65e","en|pre-book":"053efc7bfd","de|die vorbestellung":"655222e92d","en|shipment":"209ee04f68","de|die lieferung":"3e3f749f57","en|ship week":"e60bae1b1f","de|die lieferwoche":"6e3315a1ec","en|plant tag":"97e9b517d0","de|das etikett":"08319f24f9","en|danish cart":"cc7cb45157","de|der cc-container":"7e65d1788d","en|pallet":"9867d08a7d","de|die palette":"a98f84253f","en|minimum order quantity":"214921c18d","de|die mindestbestellmenge":"1834aa6c0d","en|customs":"7ece1c6b01","de|der zoll":"2e29751d9d","en|supply chain":"e7a6a517d2","de|die lieferkette":"af12c1cafc","en|sell-through":"01f8b60b46","de|der abverkauf":"23bf84abc9","en|merchandising":"ef851a1474","de|die verkaufsförderung":"fc92c1d3a7","en|territory":"9d6f8a9755","de|das verkaufsgebiet":"5da5dc22fd","en|the customer wants to pre-book two thousand plants.":"82408d067d","de|der kunde möchte zweitausend pflanzen vorbestellen.":"124501a30f","en|customer":"0c272436ea","en|wants":"7505d6b662","en|to":"f78f360832","en|two":"fae2c765c3","en|thousand":"02a229592e","en|the shipment is delayed.":"9ea7070215","de|die lieferung ist verspätet.":"c2a75a5b7d","en|delayed":"e67fbe0bc2","en|we ship to garden centres in canada.":"360a0a1b50","de|wir liefern an gartencenter in kanada.":"9948d78e55","en|ship":"05c5aaf876","en|garden":"d8c6bbd543","en|centres":"cc755c8ec9","en|inch":"fb497ceb79","en|4.5-inch pot":"290071e8d4","de|der 4,5-zoll-topf":"f2e4b7eb10","en|gallon":"81fd1af896","de|die gallone":"97fa3740bc","en|acre":"9bb5b9f3b2","de|der acre":"3c820c3222","en|grower":"ef8dec30c6","de|der gärtner":"467831a408","en|technical advisor":"808f595d2e","de|der kulturberater":"9b8397c161","en|field sales":"fa8263b70d","de|der außendienst":"b33847d0a4","en|trade show":"48956533a6","de|die fachmesse":"0da294b6af","en|booth":"eb5b1a95b8","de|der messestand":"4545a6f973","en|quote":"68050a22fd","de|das angebot":"3c78474d5f","en|managing director":"26723d2f96","de|der geschäftsführer":"4202559559","en|work permit":"175d08e7ca","de|die arbeitserlaubnis":"3e0f87c8df","en|joint venture":"04bbd12d2f","de|das gemeinschaftsunternehmen":"457b5c7acc","en|can you send me a quote?":"6d07ac963b","de|kannst du mir ein angebot schicken?":"c829ac5547","en|can":"22365b95cd","en|you":"a8fb2d81ff","en|send":"59fe5f8347","en|me":"14e6efd505","en|we meet at the trade show in january.":"9173bc2d84","de|wir treffen uns im januar auf der messe.":"fcf0b41a4b","en|meet":"ba042602b4","en|at":"d1cd7479a5","en|trade":"0cd90012d5","en|show":"cb8aea2cb9","en|january":"d81ac745eb","en|i am the growth manager for north america.":"cc245f80b1","de|ich bin der growth manager für nordamerika.":"9bfbc3c850","en|i":"876fdff21f","en|am":"ca7b9be2e2","en|growth":"e9169a3d4b","en|manager":"6acd5a2b19","en|for":"650bee7c6e","en|north":"eb5b6ab878","en|america":"9f0055efff","en|hi, thanks for coming by! so you're the heather guy. honestly, heather never sold great for us. why should i give beauty ladies bench space this fall?":"6af2029c6e","en|alright, this is our propagation house. we stick the calluna cuttings in here under mist. what would you like to see first?":"e44e8b502b","en|welcome to calluna lingo. let's learn some heather vocabulary!":"b8a8385da5"};
+const canSpeak = "speechSynthesis" in window && typeof SpeechSynthesisUtterance !== "undefined";
+let voice = null, voiceDe = null, actx = null, unlocked = false;
+let audioState = "unbekannt";
+function clipUrl(text, lang) {
+  const k = (lang === "de" ? "de" : "en") + "|" + String(text).replace(/\s*\([^)]*\)/g, "").trim().toLowerCase();
+  return AUD[k] ? "a/" + AUD[k] + ".mp3" : null;
+}
+function mkAudio(src) { const a = new Audio(); a.preload = "auto"; a.setAttribute("playsinline", ""); a.setAttribute("webkit-playsinline", ""); if (src) a.src = src; return a; }
+const player = mkAudio();
+const FX = {};   // no effect sounds: only English is read aloud
+let playToken = 0, pendingText = null;
+player.addEventListener("error", () => {
+  if (!player.src || /silence\.mp3$/.test(player.src)) return;
+  // file could not be loaded or decoded: say it with the device voice instead
+  audioState = "Datei-Fehler";
+  if (pendingText) { const p = pendingText; pendingText = null; ttsSpeak(p.t, p.slow, p.lang); }
+});
+player.addEventListener("playing", () => { audioState = "ok"; pendingText = null; });
+function pickVoice() {
+  if (!canSpeak) return;
+  const vs = speechSynthesis.getVoices();
+  const L = v => (v.lang || "").replace("_", "-");
+  voice = vs.find(v => L(v) === "en-CA") || vs.find(v => L(v) === "en-US" && /samantha|google|natural|enhanced|premium/i.test(v.name)) || vs.find(v => L(v) === "en-US") || vs.find(v => /^en/i.test(L(v))) || null;
+  voiceDe = vs.find(v => L(v) === "de-DE" && /anna|google|enhanced|premium/i.test(v.name)) || vs.find(v => L(v) === "de-DE") || vs.find(v => /^de/i.test(L(v))) || null;
+}
+if (canSpeak) { pickVoice(); try { speechSynthesis.addEventListener("voiceschanged", pickVoice); } catch (e) {} }
+function getCtx() {
+  try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); } catch (e) { actx = null; }
+  return actx;
+}
+function unlockAudio() {
+  if (unlocked) return; unlocked = true;
+  // play each element once inside the first touch so iOS lets the page play it later without a tap
+  const myToken = playToken;
+  try { player.src = "a/silence.mp3"; const p = player.play(); if (p) p.catch(() => {}); } catch (e) {}
+  Object.values(FX).forEach(el => {
+    try { el.muted = true; const p = el.play(); if (p) p.then(() => { if (!el._real) { el.pause(); el.currentTime = 0; } el.muted = false; }).catch(() => { el.muted = false; }); else el.muted = false; } catch (e) { el.muted = false; }
+  });
+  getCtx();
+  try { if (canSpeak) { const u = new SpeechSynthesisUtterance(" "); u.volume = 0; speechSynthesis.speak(u); } } catch (e) {}
+}
+document.addEventListener("pointerdown", unlockAudio, true);
+document.addEventListener("touchend", unlockAudio, true);
+document.addEventListener("keydown", unlockAudio, true);
+function ttsSpeak(t, slow, lang) {
+  if (!canSpeak || !t) return;
+  try {
+    speechSynthesis.cancel(); if (speechSynthesis.paused) speechSynthesis.resume();
+    const u = new SpeechSynthesisUtterance(String(t).replace(/\s*\([^)]*\)/g, ""));
+    if (!voice || !voiceDe) pickVoice();
+    const de = lang === "de", v = de ? voiceDe : voice;
+    u.lang = de ? "de-DE" : "en-CA"; if (v) u.voice = v;
+    u.rate = slow ? .65 : de ? 1 : .95; u.volume = 1;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+function speak(t, slow, lang) {
+  if (!S.sound || !t || lang === "de") return;
+  const url = clipUrl(t, lang);
+  if (!url) return ttsSpeak(t, slow, lang);          // free text (e.g. AI replies): device voice
+  try {
+    if (canSpeak) speechSynthesis.cancel();
+    playToken++; pendingText = { t, slow, lang };
+    player.pause();
+    if (!player.src.endsWith(url)) player.src = url; else player.currentTime = 0;
+    player.playbackRate = slow ? .7 : 1;
+    try { player.preservesPitch = true; player.webkitPreservesPitch = true; } catch (e) {}
+    const p = player.play();
+    if (p) p.catch(err => {
+      if (err && err.name === "NotAllowedError") { audioState = "blockiert"; soundNudge(); }
+      else if (err && err.name !== "AbortError") { audioState = "Fehler: " + err.name; if (pendingText) { pendingText = null; ttsSpeak(t, slow, lang); } }
+    });
+  } catch (e) { ttsSpeak(t, slow, lang); }
+}
+const speakDe = () => {};   // German is never read aloud
+let nudged = false;
+function soundNudge() { if (nudged) return; nudged = true; toastPlain("Tippe einmal irgendwo, damit der Ton startet."); unlocked = false; }
+function tone(kind) {
+  return;   // effect sounds removed – only English speech
+  if (!S.sound || kind === "bad" || kind === "pop" || kind === "tap") return;
+  const el = FX[kind === "tap" ? "pop" : kind];
+  if (el) {
+    try {
+      el._real = true; el.muted = false; el.pause(); el.currentTime = 0;
+      const p = el.play(); if (p) p.catch(() => synthTone(kind));
+      return;
+    } catch (e) {}
+  }
+  synthTone(kind);
+}
+function synthTone(kind) {
+  const c = getCtx(); if (!c) return;
+  try {
+    const note = (f, at, dur, vol) => { const o = c.createOscillator(), g = c.createGain(), t0 = c.currentTime + at; o.frequency.value = f; g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(vol, t0 + .012); g.gain.exponentialRampToValueAtTime(.0001, t0 + dur); o.connect(g).connect(c.destination); o.start(t0); o.stop(t0 + dur + .02); };
+    if (kind === "ok") { note(880, 0, .28, .28); note(1318.5, .085, .45, .3); }
+    else if (kind === "bad") { note(196, 0, .25, .25); note(146.8, .12, .3, .25); }
+    else if (kind === "done") [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => note(f, i * .11, .5, .22));
+    else note(1200, 0, .07, .12);
+  } catch (e) {}
+}
+
+/* ---------- AI (Claude) via sample capability ---------- */
+let SAMPLE, samplePromise = null;
+function getSample() {
+  if (SAMPLE !== undefined) return Promise.resolve(SAMPLE);
+  if (!samplePromise) samplePromise = (window.claude && window.claude.use ? window.claude.use("sample") : Promise.resolve(null)).then(s => (SAMPLE = s || null)).catch(() => (SAMPLE = null));
+  return samplePromise;
+}
+getSample().then(() => { if (!lessonActive && !chatActive) renderTalk(); });
+function aiError(e) {
+  const c = e && e.code;
+  if (c === "not_granted") return "Du hast den KI-Zugriff für diese Seite nicht erlaubt. Über das Menü der Seite kannst du ihn freigeben.";
+  if (c === "rate_limited") return "Gerade zu viele Anfragen. Versuch es in einer Minute nochmal.";
+  return "Die KI hat gerade nicht geantwortet. Versuch es gleich nochmal.";
+}
+
+/* ---------- icons + mascot ---------- */
+const ICON = {
+  fire: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 3.5-1.6 5.2-3 7.4C7.3 12 7 14 7.8 16c-1.4-.6-2.3-1.9-2.5-3.3C4.4 14 4 15.4 4 16.8 4 20.3 7.6 23 12 23s8-2.7 8-6.5c0-4.6-3.4-6.6-4.4-9.6-.6 1.6-1.4 2.6-2.6 3.2C13.6 7.6 13.6 4.6 12 2z"/></svg>',
+  gem: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10l4 6-9 12L3 9z" opacity=".9"/><path d="M3 9h18M9 3l3 6 3-6M12 9v12" stroke="#fff" stroke-opacity=".45" stroke-width="1.2" fill="none"/></svg>',
+  heart: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4 7 4c2.2 0 3.6 1.2 5 3 1.4-1.8 2.8-3 5-3 4 0 6.1 4.2 4.6 7.7C19.5 16.4 12 21 12 21z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.2 1.3-6.6L2.5 9.3l6.6-.8z"/></svg>',
+  cross: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></svg>',
+  skipI: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l6 6-6 6M13 6l6 6-6 6"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  lock: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="10.5" width="14" height="10.5" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2.4"/></svg>',
+  book: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4.5C6.8 3.6 9.5 3.9 11.2 5.2V20c-1.8-1.2-4.4-1.5-7.2-.8zM20 4.5c-2.8-.9-5.5-.6-7.2.7V20c1.8-1.2 4.4-1.5 7.2-.8z"/></svg>',
+  speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.3 6.3a8 8 0 0 1 0 11.4"/></svg>',
+  mute: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3h10v3h3v2a5 5 0 0 1-4.6 5A5 5 0 0 1 13 15.7V18h3v3H8v-3h3v-2.3A5 5 0 0 1 8.6 13 5 5 0 0 1 4 8V6h3zm0 5V8H6a3 3 0 0 0 1.1 2.3zm10 0v2.3A3 3 0 0 0 18 8z"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H9l-5 4v-4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg>',
+  send: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5l18-8.5L3 3.5l2.2 7L14 12l-8.8 1.5z"/></svg>'
+};
+function mascot(mood = "happy", cls = "idle") {
+  const D = "#2e2a31";
+  const cheer = mood === "cheer", sad = mood === "sad", think = mood === "think";
+  const arms = cheer
+    ? `<path d="M30 86 Q17 74 15 60" stroke="var(--sage-deep)" stroke-width="4.5" stroke-linecap="round" fill="none"/><ellipse cx="15" cy="57" rx="6" ry="3.6" transform="rotate(-70 15 57)" fill="var(--sage)"/>
+       <path d="M90 86 Q103 74 105 60" stroke="var(--sage-deep)" stroke-width="4.5" stroke-linecap="round" fill="none"/><ellipse cx="105" cy="57" rx="6" ry="3.6" transform="rotate(70 105 57)" fill="var(--sage)"/>`
+    : `<path d="M30 88 Q18 92 14 103" stroke="var(--sage-deep)" stroke-width="4.5" stroke-linecap="round" fill="none"/><ellipse cx="13" cy="106" rx="6" ry="3.6" transform="rotate(60 13 106)" fill="var(--sage)"/>
+       <path d="M90 88 Q102 ${sad ? 96 : 84} 107 ${sad ? 106 : 76}" stroke="var(--sage-deep)" stroke-width="4.5" stroke-linecap="round" fill="none"/><ellipse cx="108" cy="${sad ? 109 : 73}" rx="6" ry="3.6" transform="rotate(${sad ? 60 : -60} 108 ${sad ? 109 : 73})" fill="var(--sage)"/>`;
+  const eyes = cheer
+    ? `<path d="M44 58 Q50 50 56 58M64 58 Q70 50 76 58" stroke="${D}" stroke-width="3.2" stroke-linecap="round" fill="none"/>`
+    : `<ellipse cx="50" cy="56" rx="6.8" ry="7.8" fill="#fff"/><ellipse cx="70" cy="56" rx="6.8" ry="7.8" fill="#fff"/>
+       <circle cx="${think ? 52.5 : 51}" cy="${think ? 53.5 : sad ? 59 : 57}" r="3.7" fill="${D}"/><circle cx="${think ? 72.5 : 71}" cy="${think ? 53.5 : sad ? 59 : 57}" r="3.7" fill="${D}"/>
+       <circle cx="${think ? 53.8 : 52.4}" cy="${think ? 52 : sad ? 57.6 : 55.5}" r="1.3" fill="#fff"/><circle cx="${think ? 73.8 : 72.4}" cy="${think ? 52 : sad ? 57.6 : 55.5}" r="1.3" fill="#fff"/>
+       ${sad ? `<path d="M43 46 L54 49.5M77 46 L66 49.5" stroke="${D}" stroke-width="2.6" stroke-linecap="round"/>` : ""}`;
+  const mouth = cheer ? `<path d="M51 66 Q60 80 69 66 Z" fill="${D}"/><ellipse cx="60" cy="72.5" rx="4.2" ry="2.4" fill="#ff8fa8"/>`
+    : sad ? `<path d="M53 72 Q60 66 67 72" stroke="${D}" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M78 63 q2.5 4 0 6 q-2.5-2 0-6z" fill="#8cc6ff"/>`
+    : think ? `<circle cx="63" cy="69" r="3" fill="${D}"/>`
+    : `<path d="M53 66 Q60 73.5 67 66" stroke="${D}" stroke-width="3" stroke-linecap="round" fill="none"/>`;
+  const sparkle = (x, y, s) => `<path d="M${x} ${y - s}L${x + s * .3} ${y - s * .3}L${x + s} ${y}L${x + s * .3} ${y + s * .3}L${x} ${y + s}L${x - s * .3} ${y + s * .3}L${x - s} ${y}L${x - s * .3} ${y - s * .3}Z" fill="var(--gold)"/>`;
+  const buds = [[38,30],[48,22],[60,15],[72,22],[83,30],[30,46],[90,46],[44,40],[77,40],[60,32],[25,64],[95,64],[34,74],[86,74]]
+    .map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 2.4 : 3}" fill="#f7d3ec" opacity="${sad ? .55 : .95}"/>`).join("");
+  return `<svg class="mascot ${cls}" viewBox="0 0 120 134" role="img" aria-label="Callie, das Calluna-Maskottchen">
+    ${cheer ? sparkle(12, 30, 6) + sparkle(106, 22, 7) + sparkle(100, 44, 4) : ""}
+    ${arms}
+    <g fill="var(--heather)">
+      <circle cx="60" cy="54" r="31"/><circle cx="33" cy="66" r="17"/><circle cx="87" cy="66" r="17"/>
+      <circle cx="42" cy="38" r="17"/><circle cx="78" cy="38" r="17"/><circle cx="60" cy="27" r="17"/>
+      <ellipse cx="60" cy="78" rx="36" ry="9"/>
+    </g>
+    <circle cx="60" cy="27" r="17" fill="#fff" opacity=".08"/>
+    ${buds}
+    <rect x="27" y="80" width="66" height="13" rx="5" fill="var(--sage-deep)"/>
+    <path d="M31 93 H89 L83 126 Q82 130 78 130 H42 Q38 130 37 126 Z" fill="var(--sage)"/>
+    <rect x="47" y="104" width="26" height="8" rx="4" fill="#fff" opacity=".45"/>
+    <ellipse cx="41" cy="67" rx="5.5" ry="3.4" fill="#ff9fbd" opacity=".75"/><ellipse cx="79" cy="67" rx="5.5" ry="3.4" fill="#ff9fbd" opacity=".75"/>
+    ${eyes}${mouth}
+  </svg>`;
+}
+
+/* ---------- achievements ---------- */
+const ACH = [
+  ["first", "Erste Lektion", "1 Lektion geschafft", () => S.lessons >= 1],
+  ["perfect", "Fehlerfrei", "Eine Lektion ohne Fehler", () => S.perfect >= 1],
+  ["combo10", "Lauf", "10 richtige Antworten in Folge", () => S.bestCombo >= 10],
+  ["streak3", "Drei Tage dran", "3 Tage in Folge gelernt", () => S.streak >= 3],
+  ["streak7", "Eine Woche dran", "7 Tage in Folge gelernt", () => S.streak >= 7],
+  ["xp100", "100 XP", "100 XP gesammelt", () => S.xp >= 100],
+  ["xp500", "500 XP", "500 XP gesammelt", () => S.xp >= 500],
+  ["pairs30", "Wortpaar-Wunder", "30 Paare in einer Challenge", () => (S.bestPairs || 0) >= 30],
+  ["speak15", "Sprachtalent", "15 von 15 Wörtern eingesprochen", () => (S.bestSpeak || 0) >= 15],
+  ["unit", "Einheit gemeistert", "Alle Lektionen einer Einheit", () => UNITS.some(u => unitDone(u) >= LEVELS)],
+  ["words25", "25 Wörter sicher", "25 Begriffe mit Sicherheit 3+", () => solidCount() >= 25],
+  ["conv1", "Erstes Gespräch", "Ein Rollenspiel beendet", () => S.convs >= 1],
+  ["conv5", "Smalltalk-Profi", "5 Rollenspiele beendet", () => S.convs >= 5],
+  ["ready", "Bereit fürs Gewächshaus", "80 Begriffe sicher", () => solidCount() >= 80],
+  ["all", "Alles durch", "Alle Einheiten gemeistert", () => UNITS.every(u => unitDone(u) >= LEVELS)]
+];
+function checkAch() {
+  const fresh = [];
+  ACH.forEach(([id, name, , test]) => { if (!S.ach[id] && test()) { S.ach[id] = today(); fresh.push(name); } });
+  fresh.forEach((n, i) => setTimeout(() => toast("Erfolg freigeschaltet: " + n), 400 + i * 2200));
+  return fresh;
+}
+let toastT = null;
+function toast(t) {
+  const el = $("toast"); el.innerHTML = ICON.trophy + "<span>" + esc(t) + "</span>"; el.hidden = false; tone("done");
+  clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 2600);
+}
+
+/* ---------- home ---------- */
+function unitDone(u) { return S.units[u.id] || 0; }
+function nextUnit() { return UNITS.find(u => unitDone(u) < LEVELS) || UNITS[UNITS.length - 1]; }
+function heroText() {
+  const d = daysToVisit(), st = streakAlive();
+  const visit = d > 0 ? `Noch ${d} ${d === 1 ? "Tag" : "Tage"} bis zum Besuch.` : d === 0 ? "" : "";
+  if (S.xp === 0) return ["Hi, ich bin Callie!", "Lass uns englische Gartenbau-Fachbegriffe lernen. " + visit];
+  if (S.dayXp >= DAILY_GOAL) return ["Tagesziel geschafft!", (st > 1 ? st + " Tage in Folge. " : "") + visit];
+  if (st > 0 && S.lastDay !== today()) return [`${st} ${st === 1 ? "Tag" : "Tage"} Serie – halt sie am Leben!`, "Eine Lektion heute reicht. " + visit];
+  return [`Noch ${DAILY_GOAL - S.dayXp} XP bis zum Tagesziel.`, visit];
+}
+function render() {
+  updWunder();
+  rollDay();
+  const st = streakAlive();
+  const fire = $("stStreak");
+  fire.innerHTML = ICON.fire + st; fire.classList.toggle("off", st === 0 || S.lastDay !== today());
+  fire.title = st ? st + " Tage in Folge" : "Noch keine Serie";
+  $("stXp").innerHTML = ICON.gem + S.xp;
+  $("soundBtn").innerHTML = S.sound ? ICON.speaker : ICON.mute; $("soundBtn").setAttribute("aria-pressed", String(!!S.sound));
+  const [h, sub] = heroText();
+  $("heroMascot").innerHTML = mascot(S.dayXp >= DAILY_GOAL ? "cheer" : "happy");
+  $("heroSay").innerHTML = `${esc(h)}<small>${esc(sub)}</small><div class="row"><button class="linkish" type="button" id="soundTest">Vorlesen testen</button></div><small id="soundHint" hidden>Hörst du nichts? Lautlos-Schalter am iPhone prüfen und Lautstärke hochdrehen.</small>`;
+  $("soundTest").onclick = () => {
+    unlockAudio(); if (!S.sound) { S.sound = true; save(); render(); }
+    speak("Welcome to Calluna Lingo. Let's learn some heather vocabulary!");
+    const hint = $("soundHint"); hint.hidden = false;
+    setTimeout(() => { hint.textContent = audioState === "ok" ? "Ton läuft. Hörst du trotzdem nichts, dreh die Lautstärke hoch." : "Ton-Status: " + audioState + ". Prüfe Lautlos-Schalter und Lautstärke und tippe nochmal auf „Ton testen“."; }, 1800);
+  };
+  $("goalTxt").textContent = Math.min(S.dayXp, DAILY_GOAL) + " / " + DAILY_GOAL + " XP";
+  $("goalBar").style.width = Math.min(100, S.dayXp / DAILY_GOAL * 100) + "%";
+  const weak = ALL.filter(w => S.words[w.id] && ws(w.id).s <= 1);
+  $("btnMistakes").disabled = weak.length === 0; $("btnMistakes").hidden = weak.length === 0;
+  $("btnMistakes").textContent = weak.length ? "Fehler üben (" + weak.length + ")" : "Keine Fehler offen";
+  $("btnReview").disabled = !ALL.some(w => S.words[w.id]);
+
+  const nu = nextUnit();
+  const box = $("units"); box.innerHTML = "";
+  UNITS.forEach((u, ui) => {
+    const done = unitDone(u);
+    const learned = u.words.filter((_, i) => ws(u.id + "_" + i).s >= 3).length;
+    const sec = document.createElement("section"); sec.className = "unit";
+    sec.innerHTML = `<div class="unit-band"><div><small>Einheit ${ui + 1}</small><h2>${esc(u.de)}</h2><span class="en">${esc(u.en)}</span></div>
+      <div class="unit-meta">${learned}/${u.words.length}<br><span style="font-weight:500;opacity:.85">Wörter sicher</span></div></div>`;
+    const path = document.createElement("div"); path.className = "path";
+    for (let l = 0; l < LEVELS + 1; l++) {
+      const isChest = l === LEVELS;
+      const wrap = document.createElement("div"); wrap.className = "node-wrap";
+      wrap.style.transform = `translateX(${[0, -64, -88, -50, 24][l] || 0}px)`;
+      const b = document.createElement("button"); b.type = "button"; b.className = "node";
+      let state = "lock";
+      if (isChest) state = done >= LEVELS ? "done" : "lock";
+      else if (l < done) state = "done";
+      else if (l === done && u === nu) state = "next";
+      else if (l === done) state = "open";
+      if (state === "done") b.classList.add("done");
+      if (state === "next") b.classList.add("next");
+      b.innerHTML = isChest ? ICON.book : state === "done" ? ICON.check : state === "lock" ? ICON.lock : ICON.star;
+      b.setAttribute("aria-label", isChest ? `${u.de}: Abschluss-Wiederholung` : `${u.de}: Lektion ${l + 1}${state === "done" ? " (geschafft)" : ""}`);
+      b.addEventListener("click", () => isChest ? startLesson({ mode: "unitReview", unit: u }) : startLesson({ mode: "unit", unit: u, level: Math.min(l, done) }));
+      if (state === "next") { wrap.classList.add("has-bubble"); const bub = document.createElement("span"); bub.className = "bubble"; bub.textContent = "START"; wrap.appendChild(bub); }
+      wrap.appendChild(b);
+      path.appendChild(wrap);
+    }
+    sec.appendChild(path);
+    box.appendChild(sec);
+  });
+  renderGloss(); renderTalk(); renderAch();
+  if (!render._scrolled && nu !== UNITS[0]) {
+    render._scrolled = true;
+    const idx = UNITS.indexOf(nu), el = box.children[idx];
+    if (el) requestAnimationFrame(() => el.scrollIntoView({ block: "center" }));
+  }
+}
+function renderGloss() {
+  const q = norm($("q").value || "");
+  const host = $("glossList"); host.innerHTML = "";
+  UNITS.forEach(u => {
+    const list = u.words.map((w, i) => BYID[u.id + "_" + i]).filter(w => !q || norm(w.de + " " + w.en + " " + w.alt.join(" ")).includes(q));
+    if (!list.length) return;
+    const sec = document.createElement("section");
+    sec.innerHTML = `<h3>${esc(u.de)} · ${esc(u.en)}</h3>`;
+    const ul = document.createElement("ul"); ul.className = "glist";
+    list.forEach(w => {
+      const s = ws(w.id).s || 0;
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="de">${esc(w.de)}${w.note ? `<span class="alt">${esc(w.note)}</span>` : ""}</span>
+        <span class="en">${esc(w.en)}${w.alt.length ? `<span class="alt">auch: ${esc(w.alt.slice(0, 3).join(", "))}</span>` : ""}</span>
+        <span class="gend"><span class="dots" title="Sicherheit ${s}/5">${[1,2,3,4,5].map(k => `<i class="${k <= s ? "on" : ""}"></i>`).join("")}</span>
+        <button class="icon-btn" type="button" aria-label="${esc(w.en)} anhören">${ICON.speaker}</button></span>`;
+      const sp = li.querySelector(".icon-btn"); if (sp) sp.addEventListener("click", () => speak(w.en));
+      ul.appendChild(li);
+    });
+    sec.appendChild(ul); host.appendChild(sec);
+  });
+  if (!host.children.length) host.innerHTML = '<p style="color:var(--ink-soft)">Kein Begriff gefunden.</p>';
+}
+function renderAch() {
+  $("statGrid").innerHTML = [
+    [S.xp, "XP gesamt"], [streakAlive(), "Tage in Folge"], [solidCount() + " / " + ALL.length, "Wörter sicher"],
+    [S.lessons, "Lektionen"], [S.bestCombo, "Beste Serie"], [S.convs, "Gespräche"]
+  ].map(([v, l]) => `<div class="statbox"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("");
+  $("achList").innerHTML = ACH.map(([id, name, desc]) => `<div class="ach ${S.ach[id] ? "got" : ""}"><span class="badge">${ICON.trophy}</span><b>${esc(name)}</b><span>${esc(S.ach[id] ? "Geschafft" : desc)}</span></div>`).join("");
+}
+function showTab(v) {
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.v === v)));
+  ["Path", "Talk", "Gloss", "Ach"].forEach(k => ($("view" + k).hidden = k !== v));
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => showTab(t.dataset.v)));
+$("q").addEventListener("input", renderGloss);
+$("btnMistakes").addEventListener("click", () => startLesson({ mode: "mistakes" }));
+$("btnReview").addEventListener("click", () => startLesson({ mode: "review" }));
+$("soundBtn").addEventListener("click", () => { S.sound = !S.sound; if (!S.sound) { try { player.pause(); } catch (e) {} if (canSpeak) speechSynthesis.cancel(); } save(); render(); if (S.sound) speak("heather"); });
+
+/* ---------- lesson builder ---------- */
+const listenOff = () => !S.sound || Date.now() < (S.noListenUntil || 0);
+function pickWords(pool, n, newMax) {
+  const seen = pool.filter(w => S.words[w.id]), unseen = pool.filter(w => !S.words[w.id]);
+  const out = shuffle(unseen).slice(0, newMax);
+  const rest = seen.sort((a, b) => (ws(a.id).s - ws(b.id).s) || (Math.random() - .5));
+  for (const w of rest) { if (out.length >= n) break; out.push(w); }
+  for (const w of shuffle(unseen)) { if (out.length >= n) break; if (!out.includes(w)) out.push(w); }
+  return out;
+}
+function distractors(w, field, k) {
+  const same = shuffle(ALL.filter(x => x.unit === w.unit && x.id !== w.id));
+  const other = shuffle(ALL.filter(x => x.unit !== w.unit));
+  const out = [], vals = new Set([norm(w[field])]);
+  for (const x of [...same, ...other]) { const v = norm(x[field]); if (vals.has(v)) continue; vals.add(v); out.push(x); if (out.length >= k) break; }
+  return out;
+}
+function buildExercises(cfg) {
+  let pool, words, sentences = [];
+  if (cfg.mode === "unit" || cfg.mode === "unitReview") {
+    const u = cfg.unit;
+    pool = ALL.filter(w => w.unit === u.id);
+    words = cfg.mode === "unitReview" ? shuffle(pool).slice(0, 8) : pickWords(pool, 7, cfg.level === 0 ? 5 : 3);
+    sentences = shuffle(u.sentences).slice(0, cfg.mode === "unitReview" ? 3 : 2);
+  } else if (cfg.mode === "mistakes") {
+    pool = ALL.filter(w => S.words[w.id] && ws(w.id).s <= 1);
+    words = shuffle(pool).slice(0, 8);
+  } else {
+    pool = ALL.filter(w => S.words[w.id]);
+    words = pool.sort((a, b) => (ws(a.id).s - ws(b.id).s) || (Math.random() - .5)).slice(0, 8);
+    const units = new Set(words.map(w => w.unit));
+    sentences = shuffle(UNITS.filter(u => units.has(u.id)).flatMap(u => u.sentences)).slice(0, 2);
+  }
+  const ex = [];
+  const intro = words.filter(w => !S.words[w.id]);
+  intro.forEach(w => ex.push({ type: "mcTo", w, isNew: true }));
+  const types = ["mcTo", "mcFrom", "type", "listen", "type", "mcFrom"];
+  shuffle(words).forEach((w, i) => {
+    let t = types[i % types.length];
+    if (t === "listen" && listenOff()) t = "mcFrom";
+    if (intro.includes(w) && t === "mcTo") t = "type";
+    ex.push({ type: t, w });
+  });
+  if (words.length >= 4) ex.splice(Math.min(ex.length, intro.length + 2), 0, { type: "match", ws: shuffle(words).slice(0, Math.min(5, words.length)) });
+  sentences.forEach(s => ex.push({ type: "build", s }));
+  const head = ex.slice(0, intro.length);
+  let tail = shuffle(ex.slice(intro.length));
+  // after every new word, practise one word that is already known (or was just introduced)
+  const known = new Set(words.filter(w => S.words[w.id]).map(w => w.id));
+  const ready = x => x.type === "build" || (x.w ? known.has(x.w.id) : x.ws.every(w => known.has(w.id)));
+  const out = [];
+  head.forEach((h, i) => {
+    out.push(h); known.add(h.w.id);
+    if (i >= 1) { const j = tail.findIndex(x => ready(x) && x.type !== "match"); if (j >= 0) out.push(tail.splice(j, 1)[0]); }
+  });
+  // remaining practice: avoid the same exercise type twice in a row where possible
+  while (tail.length) {
+    const prev = out.length ? out[out.length - 1].type : "";
+    let j = tail.findIndex(x => ready(x) && x.type !== prev);
+    if (j < 0) j = tail.findIndex(ready);
+    if (j < 0) j = 0;
+    const x = tail.splice(j, 1)[0]; out.push(x); if (x.w) known.add(x.w.id);
+  }
+  return out.map((x, k) => ({ ...x, k }));
+}
+
+/* ---------- lesson runner ---------- */
+let L = null, lessonActive = false, chatActive = false;
+let homeY = 0;
+/* keep the lesson inside the part of the screen the keyboard leaves free, so "Prüfen" sits right above the keyboard */
+function fitLesson() {
+  const el = $("lesson"), vv = window.visualViewport;
+  if (!el || el.hidden || !vv) return;
+  const kb = window.innerHeight - vv.height > 120 && Math.abs((vv.scale || 1) - 1) < .05;
+  document.documentElement.classList.toggle("kb-open", kb);
+  if (kb) { el.style.position = "fixed"; el.style.left = "0"; el.style.right = "0"; el.style.top = vv.offsetTop + "px"; el.style.height = vv.height + "px"; }
+  else { el.style.position = el.style.left = el.style.right = el.style.top = el.style.height = ""; window.scrollTo(0, 0); }
+  const a = document.activeElement;
+  if (kb && a && (a.id === "typein" || a.id === "chatIn")) a.scrollIntoView({ block: "nearest" });
+}
+if (window.visualViewport) { visualViewport.addEventListener("resize", fitLesson); visualViewport.addEventListener("scroll", fitLesson); }
+function openOverlay(chat) {
+  if (!document.documentElement.classList.contains("lesson-open")) homeY = window.scrollY || 0;
+  document.documentElement.classList.add("lesson-open");
+  $("lesson").classList.toggle("chat", !!chat);
+  $("lesson").hidden = false; window.scrollTo(0, 0);
+  $("lbarWrap").style.visibility = "visible"; $("hearts").hidden = !!chat;
+}
+function startLesson(cfg) {
+  const ex = buildExercises(cfg);
+  if (!ex.length) return;
+  L = { cfg, queue: ex, total: ex.length, solved: new Set(), done: 0, hearts: 5, mistakes: 0, combo: 0, missed: new Map(), current: null, answered: false, start: Date.now() };
+  lessonActive = true; openOverlay(false);
+  nextEx();
+}
+function closeOverlay() {
+  if (W) { W.over = true; clearInterval(W.timer); }
+  if (P) spStop(true);
+  $("hearts").style.color = "";
+  lessonActive = false; chatActive = false; $("lesson").hidden = true;
+  document.documentElement.classList.remove("lesson-open", "kb-open");
+  { const el = $("lesson"); el.style.position = el.style.left = el.style.right = el.style.top = el.style.height = ""; }
+  try { player.pause(); } catch (e) {}
+  if (canSpeak) speechSynthesis.cancel();
+  render();
+  requestAnimationFrame(() => window.scrollTo(0, homeY));
+}
+$("quit").addEventListener("click", () => {
+  if (chatActive) return endChatPrompt();
+  if (!L || L.result) return closeOverlay();
+  setCheck(`<div class="verdict"><strong>Wirklich aufhören?</strong><p class="note">Dein Fortschritt in dieser Lektion geht verloren.</p></div>
+    <div class="check-row"><button class="btn ghost" type="button" id="stay">Weiterlernen</button><button class="btn bad" type="button" id="leave">Beenden</button></div>`, "");
+  $("stay").onclick = () => (L.answered ? showVerdict(L.lastKind) : L.current.type === "match" ? setCheck(MATCH_BAR, "") : checkBarIdle());
+  $("leave").onclick = closeOverlay;
+});
+function setHearts() { $("hearts").innerHTML = ICON.heart + L.hearts; }
+function setBar() { $("lbar").style.width = (L.result ? 100 : L.solved.size / L.total * 100) + "%"; }
+function setCheck(html, cls) { const cb = $("checkbar"); cb.className = "checkbar" + (cls ? " " + cls : ""); $("checkIn").innerHTML = html; }
+function nextEx() {
+  setHearts(); setBar();
+  if (L.hearts <= 0) return finish(false);
+  if (!L.queue.length) return finish(true);
+  L.current = L.queue.shift(); L.answered = false; L.sel = null; L.built = []; L.given = "";
+  if (L.current.type === "listen" && listenOff()) L.current = { ...L.current, type: "mcFrom" };
+  renderEx();
+}
+const KIND = { mcTo: "Was heißt das auf Englisch?", mcFrom: "Was bedeutet das auf Deutsch?", type: "Schreib es auf Englisch", listen: "Hör zu und wähle die Bedeutung", match: "Finde die Paare", build: "Übersetze diesen Satz" };
+function safeNote(w) {
+  if (!w || !w.note) return "";
+  const n = norm(w.note);
+  return [w.en, ...w.alt].some(a => n.includes(norm(a))) ? "" : w.note;
+}
+function coach(text, sub, lang) {
+  setTimeout(() => { const b = $("coachSay"); if (b) b.onclick = () => { if (lang !== "de") speak(text); }; }, 0);
+  return `<div class="coach"><div id="coachM">${mascot("happy")}</div><button type="button" class="say say-btn" id="coachSay" aria-label="Vorlesen"><span class="term-big">${esc(text)}</span>${sub ? `<small>${esc(sub)}</small>` : ""}</button></div>`;
+}
+function setCoach(mood, cls) { const m = $("coachM"); if (m) m.innerHTML = mascot(mood, cls); }
+function renderEx() {
+  const e = L.current, st = $("stage");
+  st.innerHTML = "";
+  if (e.isNew) st.insertAdjacentHTML("beforeend", '<span class="newtag">Neues Wort</span>');
+  st.insertAdjacentHTML("beforeend", `<h2 class="kind">${KIND[e.type]}</h2>`);
+  if (e.type === "mcTo" || e.type === "mcFrom" || e.type === "listen") renderMC(e, st);
+  else if (e.type === "type") renderType(e, st);
+  else if (e.type === "match") renderMatch(e, st);
+  else renderBuild(e, st);
+  if (e.type !== "match") checkBarIdle();
+  else setCheck(MATCH_BAR, "");
+}
+const MATCH_BAR = `<div class="check-row"><span style="color:var(--ink-soft);font-weight:600">Tippe links und rechts das passende Paar.</span></div>`;
+function checkBarIdle() {
+  const e = L.current;
+  setCheck(`<div class="check-row idle"><button class="btn ghost skipbtn" type="button" id="skip">Überspringen</button><button class="btn wide" type="button" id="checkBtn" disabled>Prüfen</button></div>`, "");
+  $("checkBtn").onclick = check;
+  $("skip").onclick = () => grade("skip");
+  updateCheckEnabled();
+}
+function updateCheckEnabled() {
+  const b = $("checkBtn"); if (!b) return;
+  const e = L.current;
+  b.disabled = e.type === "type" ? !($("typein") && $("typein").value.trim()) : e.type === "build" ? L.built.length === 0 : L.sel == null;
+}
+function renderMC(e, st) {
+  const w = e.w;
+  let options;
+  if (e.type === "mcTo") {
+    st.insertAdjacentHTML("beforeend", coach(w.de, safeNote(w), "de"));
+    options = shuffle([w, ...distractors(w, "en", 3)]).map(x => ({ id: x.id, label: x.en, w: x }));
+    speakDe(w.de);
+  } else if (e.type === "mcFrom") {
+    st.insertAdjacentHTML("beforeend", `<div class="prompt">${S.sound ? `<button class="speak-big" type="button" id="say" aria-label="Anhören">${ICON.speaker}</button>` : ""}<span class="term">${esc(w.en)}</span></div>`);
+    options = shuffle([w, ...distractors(w, "de", 3)]).map(x => ({ id: x.id, label: x.de, w: x }));
+  } else {
+    st.insertAdjacentHTML("beforeend", `<div class="prompt"><button class="speak-big" type="button" id="say" aria-label="Nochmal anhören">${ICON.speaker}</button>
+      <button class="btn ghost small" type="button" id="saySlow">Langsam</button></div>`);
+    options = shuffle([w, ...distractors(w, "de", 3)]).map(x => ({ id: x.id, label: x.de, w: x }));
+  }
+  const box = document.createElement("div"); box.className = "opts";
+  options.forEach((o, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "opt"; b.setAttribute("aria-pressed", "false");
+    b.dataset.id = String(o.id); b.innerHTML = `<span class="k">${i + 1}</span><span>${esc(o.label)}</span>`;
+    b.onclick = () => { if (L.answered) return; L.sel = o.id; L.given = o.label; box.querySelectorAll(".opt").forEach(x => x.setAttribute("aria-pressed", String(x === b))); if (e.type === "mcTo") speak(o.label); else tone("pop"); updateCheckEnabled(); };
+    box.appendChild(b);
+  });
+  st.appendChild(box);
+  if (e.type === "listen") st.insertAdjacentHTML("beforeend", `<button class="linkish" type="button" id="cantListen">Kann gerade nicht zuhören</button>`);
+  const say = $("say"); if (say) say.onclick = () => speak(w.en);
+  const slow = $("saySlow"); if (slow) slow.onclick = () => speak(w.en, true);
+  const cl = $("cantListen"); if (cl) cl.onclick = () => {
+    S.noListenUntil = Date.now() + 36e5; save();
+    L.queue = L.queue.map(x => x.type === "listen" ? { ...x, type: "mcFrom" } : x);
+    L.current = { ...L.current, type: "mcFrom" }; L.sel = null; renderEx();
+    toastPlain("Hörübungen für 1 Stunde aus – ohne Herzverlust.");
+  };
+  if (e.type !== "mcTo") speak(w.en);
+}
+function toastPlain(t) { const el = $("toast"); el.innerHTML = ICON.check + "<span>" + esc(t) + "</span>"; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 2400); }
+function renderType(e, st) {
+  const w = e.w;
+  st.insertAdjacentHTML("beforeend", coach(w.de, safeNote(w), "de") + `<textarea class="typein" id="typein" enterkeyhint="done" rows="1" aria-label="Englischer Begriff" placeholder="Auf Englisch eingeben" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>`);
+  const ta = $("typein");
+  speakDe(w.de);
+  ta.addEventListener("input", updateCheckEnabled);
+  ta.addEventListener("keydown", ev => { if (ev.key === "Enter") { ev.preventDefault(); if (!L.answered && ta.value.trim()) check(); else if (L.answered) cont(); } });
+  if (!matchMedia("(pointer: coarse)").matches) setTimeout(() => ta.focus({ preventScroll: true }), 60);
+}
+function sentenceTokens(s) { return s.split(" ").map(t => t.replace(/[.,!?]$/, "")); }
+function renderBuild(e, st) {
+  const [de, en] = e.s;
+  const toks = sentenceTokens(en);
+  const lowerSet = new Set(toks.map(t => t.toLowerCase()));
+  const extra = shuffle(UNITS.flatMap(u => u.sentences).flatMap(x => sentenceTokens(x[1]))).filter(t => !lowerSet.has(t.toLowerCase()));
+  const tiles = shuffle([...toks, ...[...new Set(extra)].slice(0, 3)]).map((t, i) => ({ i, t }));
+  speakDe(de);
+  st.insertAdjacentHTML("beforeend", coach(de, "", "de") + `<div class="answer-line" id="aline" aria-label="Deine Antwort"></div><div class="bank" id="bank"></div>`);
+  const aline = $("aline"), bank = $("bank");
+  const draw = () => {
+    aline.innerHTML = ""; bank.innerHTML = "";
+    L.built.forEach((ti, pos) => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "tile"; b.textContent = tiles[ti].t;
+      b.onclick = () => { if (L.answered) return; L.built.splice(pos, 1); tone("pop"); draw(); updateCheckEnabled(); };
+      aline.appendChild(b);
+    });
+    tiles.forEach(tl => {
+      const b = document.createElement("button"); b.type = "button"; b.className = "tile" + (L.built.includes(tl.i) ? " used" : ""); b.textContent = tl.t;
+      b.onclick = () => { if (L.answered || L.built.includes(tl.i)) return; L.built.push(tl.i); draw(); updateCheckEnabled(); };
+      bank.appendChild(b);
+    });
+  };
+  L.tiles = tiles; draw();
+}
+function renderMatch(e, st) {
+  const left = shuffle(e.ws), right = shuffle(e.ws);
+  const grid = document.createElement("div"); grid.className = "pairs";
+  let pickL = null, pickR = null, solved = 0;
+  const cells = [];
+  for (let i = 0; i < left.length; i++) {
+    const a = document.createElement("button"); a.type = "button"; a.className = "pair"; a.textContent = left[i].de; a.dataset.id = left[i].id; a.dataset.side = "L";
+    const b = document.createElement("button"); b.type = "button"; b.className = "pair"; b.textContent = right[i].en; b.dataset.id = right[i].id; b.dataset.side = "R";
+    grid.append(a, b); cells.push(a, b);
+  }
+  const tryPair = () => {
+    if (!pickL || !pickR) return;
+    const A = pickL, B = pickR; pickL = pickR = null;
+    if (A.dataset.id === B.dataset.id) {
+      [A, B].forEach(x => { x.classList.add("ok"); x.disabled = true; x.setAttribute("aria-pressed", "false"); });
+      tone("ok"); bump(A.dataset.id, true); solved++;
+      if (solved === left.length) setTimeout(() => { L.done++; L.solved.add(e.k); L.combo++; S.bestCombo = Math.max(S.bestCombo, L.combo); setBar(); save(); nextEx(); }, 450);
+    } else {
+      [A, B].forEach(x => { x.classList.add("miss"); x.setAttribute("aria-pressed", "false"); });
+      tone("bad"); L.mistakes++; L.combo = 0;
+      bump(A.dataset.id, false); L.missed.set(A.dataset.id, BYID[A.dataset.id]);
+      setTimeout(() => [A, B].forEach(x => x.classList.remove("miss")), 450);
+    }
+  };
+  cells.forEach(c => c.onclick = () => {
+    if (c.classList.contains("ok")) return;
+    if (c.dataset.side === "L") { if (pickL) pickL.setAttribute("aria-pressed", "false"); pickL = c; tone("pop"); }
+    else { if (pickR) pickR.setAttribute("aria-pressed", "false"); pickR = c; speak(BYID[c.dataset.id].en); }
+    c.setAttribute("aria-pressed", "true"); tryPair();
+  });
+  st.appendChild(grid);
+}
+function check() {
+  if (L.answered) return;
+  const e = L.current;
+  if (e.type === "type") {
+    L.given = $("typein").value.trim();
+    const r = judgeTyped(L.given, e.w);
+    L.note = r.typo ? "Kleiner Tippfehler – richtig geschrieben: " + e.w.en : r.other ? `„${L.given}“ heißt ${r.other.de}.` : "";
+    grade(r.ok ? "ok" : "bad");
+  } else if (e.type === "build") {
+    L.given = L.built.map(i => L.tiles[i].t).join(" ");
+    L.note = "";
+    const sNorm = t => String(t).toLowerCase().replace(/[’`]/g, "'").replace(/[.,!?;:]/g, " ").replace(/\s+/g, " ").trim();
+    grade(sNorm(L.given) === sNorm(e.s[1]) ? "ok" : "bad");
+  } else {
+    const ok = L.sel === e.w.id;
+    const chosen = BYID[L.sel];
+    L.note = !ok && chosen ? `Du hast gewählt: ${chosen.de} = ${chosen.en}` : "";
+    grade(ok ? "ok" : "bad");
+  }
+}
+function grade(kind) {
+  const e = L.current; L.answered = true; L.lastKind = kind;
+  if (kind === "skip") {
+    if (e.w) bump(e.w.id, false, true);
+    L.queue.push({ ...e, isNew: false }); L.combo = 0; L.note = "";
+    tone("tap");
+  } else if (kind === "bad") {
+    if (e.w) { bump(e.w.id, false); L.missed.set(e.w.id, e.w); }
+    L.hearts--; L.mistakes++; L.combo = 0;
+    L.queue.push({ ...e, isNew: false });
+    tone("bad"); setCoach("sad", "droop");
+    const st = $("stage"); st.classList.remove("shake"); void st.offsetWidth; st.classList.add("shake");
+  } else {
+    if (e.w) bump(e.w.id, true);
+    L.done++; L.solved.add(e.k); L.combo++; S.bestCombo = Math.max(S.bestCombo, L.combo);
+    tone("ok"); setCoach("cheer", "jump");
+  }
+  if (e.w) document.querySelectorAll("#stage .opt").forEach(x => {
+    if (x.dataset.id === String(e.w.id)) x.classList.add("right");
+    else if (x.getAttribute("aria-pressed") === "true") x.classList.add("wrong");
+    x.disabled = true;
+  });
+  if (e.type === "build") $("aline").classList.add(kind === "ok" ? "right" : "wrong");
+  showVerdict(kind);
+  // English is read once: listen/mcFrom already played it on load, mcTo when the right option was tapped
+  const heard = e.type === "listen" || e.type === "mcFrom" || (e.type === "mcTo" && kind === "ok");
+  if (!heard && e.type !== "match") setTimeout(() => speak(e.w ? e.w.en : e.s[1]), kind === "skip" ? 0 : 300);
+  setHearts(); setBar(); save();
+}
+const PRAISE = ["Super!", "Richtig!", "Klasse!", "Sitzt!", "Stark!", "Genau!"];
+function solutionOf(e) { return e.type === "build" ? e.s[1] : (e.type === "mcFrom" || e.type === "listen") ? e.w.de + " = " + e.w.en : e.w.en; }
+function showVerdict(kind) {
+  const e = L.current, sol = solutionOf(e);
+  const ok = kind === "ok";
+  const altTxt = ok && e.w && e.w.alt.length ? "Auch richtig: " + e.w.alt.slice(0, 2).join(", ") : "";
+  const comboTxt = ok && L.combo >= 3 ? `<span class="combo">${L.combo} in Folge!</span>` : "";
+  const head = ok ? PRAISE[Math.floor(Math.random() * PRAISE.length)] + comboTxt : kind === "skip" ? "Übersprungen – kostet kein Herz" : "Richtige Lösung:";
+  const hidden = e.w && e.w.note && !safeNote(e.w) ? `<p class="note">${esc(e.w.note)}</p>` : "";
+  const body = ok ? (L.note ? `<p>${esc(L.note)}</p>` : altTxt ? `<p class="note">${esc(altTxt)}</p>` : "") + hidden
+    : `<p>${kind === "skip" ? "Lösung: " : ""}${esc(sol)}</p>${L.note ? `<p class="note">${esc(L.note)}</p>` : ""}${hidden}`;
+  const canExplain = kind !== "ok" && SAMPLE !== null;
+  const vIcon = ok ? ICON.check : kind === "bad" ? ICON.cross : ICON.skipI;
+  setCheck(`<div class="verdict"><div class="vhead"><span class="vicon">${vIcon}</span><strong>${head}</strong>
+      ${S.sound ? `<button class="icon-btn vsay" type="button" id="sayAgain" aria-label="Anhören">${ICON.speaker}</button>` : ""}</div>${body}
+      ${canExplain ? `<button class="linkish" type="button" id="explainBtn">Erklär's mir</button>` : ""}</div>
+    <div class="explain" id="explainBox" hidden></div>
+    <button class="btn wide ${kind === "bad" ? "bad" : ""}" type="button" id="contBtn">Weiter</button>`, ok ? "good" : kind === "bad" ? "miss" : "skip");
+  $("contBtn").onclick = cont;
+  const sa = $("sayAgain"); if (sa) sa.onclick = () => speak(e.w ? e.w.en : e.s[1]);
+  const eb = $("explainBtn"); if (eb) eb.onclick = () => explain(e, eb);
+  $("contBtn").focus({ preventScroll: true });
+}
+async function explain(e, btn) {
+  const box = $("explainBox"); box.hidden = false; btn.disabled = true; box.textContent = "Callie überlegt …";
+  const s = await getSample();
+  if (!s) { box.textContent = "Erklärungen sind in dieser Ansicht nicht verfügbar."; return; }
+  const task = KIND[e.type] + (e.w ? ` – Begriff: ${e.type === "mcFrom" || e.type === "listen" ? e.w.en : e.w.de}` : ` – Satz: ${e.s[0]}`);
+  const exp = solutionOf(e);
+  const prompt = `Du bist ein freundlicher Englisch-Coach für Gartenbau-Fachsprache. the learner (Muttersprache Deutsch, Englisch C1, gelernter Zierpflanzengärtner) lernt Fachbegriffe für Produktion und Verkauf von Calluna vulgaris (Besenheide, Marke Beauty Ladies) in Kanada und den USA.
+Übung: ${task}
+Erwartete Lösung: "${exp}"${e.w && e.w.alt.length ? ` (ebenfalls akzeptiert: ${e.w.alt.join(", ")})` : ""}
+the learner's Antwort: "${L.given || "(übersprungen)"}"
+Erkläre auf Deutsch in höchstens 4 kurzen Sätzen: warum seine Antwort nicht passt (oder ob sie in einem anderen Kontext stimmen würde), was der Unterschied zwischen den Begriffen ist, und gib einen kurzen englischen Beispielsatz aus dem Gärtnerei-Alltag in Nordamerika. Kein Markdown, keine Aufzählungszeichen.`;
+  try { await s(prompt, { modelTier: "quick", onText: ({ text }) => { box.textContent = text; } }); }
+  catch (err) { box.textContent = (err && err.text) || aiError(err); }
+}
+function cont() { if (L && L.answered) nextEx(); }
+function finish(passed) {
+  L.result = true; setBar();
+  const perfect = passed && L.mistakes === 0;
+  let xp = 0;
+  if (passed) {
+    xp = 10 + (perfect ? 5 : 0) + (L.cfg.mode === "unitReview" ? 5 : 0);
+    if (L.cfg.mode === "unit") { const u = L.cfg.unit; S.units[u.id] = Math.max(unitDone(u), Math.min(LEVELS, L.cfg.level + 1)); }
+    S.lessons++; if (perfect) S.perfect++;
+    addXp(xp);
+  }
+  checkAch(); save();
+  const secs = Math.round((Date.now() - L.start) / 1000);
+  const acc = Math.round(100 * L.done / Math.max(1, L.done + L.mistakes));
+  const missed = [...L.missed.values()];
+  $("stage").innerHTML = `<div class="result">
+    <div style="width:110px">${mascot(passed ? "cheer" : "sad", passed ? "jump" : "droop")}</div>
+    <h2>${passed ? (perfect ? "Fehlerfrei!" : "Lektion geschafft!") : "Keine Herzen mehr"}</h2>
+    <p>${passed ? (S.dayXp >= DAILY_GOAL ? "Tagesziel erreicht. Gut gemacht!" : "Noch " + (DAILY_GOAL - S.dayXp) + " XP bis zum Tagesziel.") : "Kein Problem – die schweren Wörter kommen beim nächsten Versuch zuerst."}</p>
+    <div class="cards">
+      <div class="rcard"><b>XP</b><span>+${xp}</span></div>
+      <div class="rcard h"><b>Treffer</b><span>${acc}%</span></div>
+      <div class="rcard m"><b>Zeit</b><span>${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}</span></div>
+    </div>
+    ${missed.length ? `<div class="mistakes"><strong>Nochmal anschauen</strong>${missed.map(w => `<div>${esc(w.de)} → <b>${esc(w.en)}</b></div>`).join("")}</div>` : ""}
+  </div>`;
+  setCheck(`<div class="check-row idle">${!passed ? `<button class="btn ghost skipbtn" type="button" id="retry">Nochmal</button>` : ""}<button class="btn heather wide" type="button" id="doneBtn">Weiter</button></div>`, "");
+  $("doneBtn").onclick = closeOverlay;
+  const r = $("retry"); if (r) r.onclick = () => { const c = L.cfg; startLesson(c); };
+  tone(passed ? "done" : "bad");
+}
+document.addEventListener("keydown", ev => {
+  if (!lessonActive || !L || L.result) return;
+  if (ev.target && (ev.target.id === "typein" || ev.target.tagName === "TEXTAREA")) return;
+  const e = L.current;
+  if (/^[1-4]$/.test(ev.key) && !L.answered && ["mcTo", "mcFrom", "listen"].includes(e.type)) {
+    const b = $("stage").querySelectorAll(".opt")[+ev.key - 1]; if (b) b.click();
+  } else if (ev.key === "Enter") {
+    if (ev.target && ev.target.tagName === "BUTTON") return;
+    ev.preventDefault();
+    if (L.answered) cont(); else { const b = $("checkBtn"); if (b && !b.disabled) check(); }
+  }
+});
+
+/* ---------- Wortpaar-Wunder: 60-second pair challenge ---------- */
+const W_SECS = 60, W_ROWS = 5;
+const MIC_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V21h2v-3.1A7 7 0 0 0 19 11z"/></svg>';
+const CLOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2.5h6"/></svg>';
+let W = null;
+function updWunder() {
+  const b = $("wBest"); if (!b) return;
+  const r = [];
+  if (S.bestPairs) r.push("Tippen " + S.bestPairs + " Paare");
+  if (S.bestSpeak) r.push("Sprechen " + S.bestSpeak + "/" + SP_N);
+  b.textContent = r.length ? "Rekord: " + r.join(" · ") : "Noch kein Rekord – leg los!";
+}
+function wunderPool() {
+  const pool = ALL.filter(w => S.words[w.id]);
+  for (const w of ALL) { if (pool.length >= 15) break; if (!pool.includes(w)) pool.push(w); }
+  return pool;
+}
+function wOnBoard() { return [...W.left, ...W.right].map(c => c.dataset.id).filter(Boolean); }
+function wNext(extra = []) {
+  const ids = new Set([...wOnBoard(), ...extra.map(w => w.id)]);
+  const words = [...ids].map(id => BYID[id]);
+  const de = new Set(words.map(w => norm(w.de))), en = new Set(words.map(w => norm(w.en)));
+  for (let t = 0; t < W.pool.length * 2; t++) {
+    if (!W.q.length) W.q = shuffle(W.pool);
+    const w = W.q.shift();
+    if (!ids.has(w.id) && !de.has(norm(w.de)) && !en.has(norm(w.en))) return w;
+  }
+  return null;
+}
+function wCell(side) { const c = document.createElement("button"); c.type = "button"; c.className = "pair"; c.dataset.side = side; c.dataset.id = ""; c.onclick = () => wTap(c); return c; }
+function wFill(c, w, f) {
+  c.dataset.id = w ? w.id : ""; c.textContent = w ? w[f] : "";
+  c.className = "pair" + (w ? " pop-in" : " ok"); c.disabled = !w; c.setAttribute("aria-pressed", "false");
+}
+function wScore(flash) {
+  setCheck(`<div class="wscore"><div><b>${W.pairs}</b><span>Paare</span></div><div><b>${W.combo}</b><span>Serie</span></div><div><b>${Math.max(S.bestPairs || 0, W.pairs)}</b><span>Rekord</span></div>${flash ? `<em class="wflash ${flash[0] === "+" ? "up" : "down"}">${flash}</em>` : ""}</div>`, "");
+}
+function wTick() {
+  if (!W || W.over) return;
+  const left = Math.max(0, W.end - Date.now());
+  $("lbar").style.width = Math.min(100, left / W.total * 100) + "%";
+  $("hearts").innerHTML = CLOCK + Math.ceil(left / 1000);
+  $("hearts").style.color = left <= 10000 ? "var(--bad)" : "var(--heather)";
+  if (left <= 0) wEnd();
+}
+function startWunder() {
+  if (W) clearInterval(W.timer);
+  W = { pool: wunderPool(), q: [], pairs: 0, combo: 0, best: 0, miss: 0, total: W_SECS * 1000, end: Date.now() + W_SECS * 1000, timer: null, over: false, hit: new Set(), pickL: null, pickR: null, left: [], right: [], start: Date.now() };
+  L = null; lessonActive = true; openOverlay(false);
+  $("hearts").hidden = false;
+  const st = $("stage");
+  st.innerHTML = `<h2 class="kind">Wortpaar-Wunder</h2><p class="wsub">Tippe Deutsch und Englisch, die zusammengehören. Ein Fehler kostet 3 Sekunden, jede 5er-Serie bringt 3 Sekunden extra.</p>`;
+  const grid = document.createElement("div"); grid.className = "pairs";
+  for (let i = 0; i < W_ROWS; i++) { const a = wCell("L"), b = wCell("R"); grid.append(a, b); W.left.push(a); W.right.push(b); }
+  st.appendChild(grid);
+  const first = []; for (let i = 0; i < W_ROWS; i++) { const w = wNext(first); if (w) first.push(w); }
+  shuffle(first).forEach((w, i) => wFill(W.left[i], w, "de"));
+  shuffle(first).forEach((w, i) => wFill(W.right[i], w, "en"));
+  wScore(); wTick(); W.timer = setInterval(wTick, 100);
+}
+function wTap(c) {
+  if (!W || W.over || !c.dataset.id || c.classList.contains("ok")) return;
+  if (c.dataset.side === "L") { if (W.pickL) W.pickL.setAttribute("aria-pressed", "false"); W.pickL = c; }
+  else { if (W.pickR) W.pickR.setAttribute("aria-pressed", "false"); W.pickR = c; }
+  c.setAttribute("aria-pressed", "true");
+  if (!W.pickL || !W.pickR) { tone("pop"); return; }
+  const A = W.pickL, B = W.pickR; W.pickL = W.pickR = null;
+  if (A.dataset.id === B.dataset.id) {
+    const id = A.dataset.id;
+    [A, B].forEach(x => { x.classList.add("ok"); x.disabled = true; x.setAttribute("aria-pressed", "false"); });
+    tone("ok"); W.pairs++; W.combo++; W.best = Math.max(W.best, W.combo);
+    if (!W.hit.has(id)) { W.hit.add(id); bump(id, true); }
+    let flash = "";
+    if (W.combo % 5 === 0) { W.end += 3000; flash = "+3 s"; }
+    wScore(flash); wTick();
+    setTimeout(() => { if (W.over) return; A.dataset.id = B.dataset.id = ""; const w = wNext(); wFill(A, w, "de"); wFill(B, w, "en"); }, 260);
+  } else {
+    [A, B].forEach(x => { x.classList.add("miss"); x.setAttribute("aria-pressed", "false"); });
+    tone("bad"); W.combo = 0; W.miss++; W.end -= 3000;
+    bump(A.dataset.id, false, true);
+    setTimeout(() => [A, B].forEach(x => x.classList.remove("miss")), 400);
+    wScore("−3 s"); wTick();
+  }
+}
+function wEnd() {
+  if (W.over) return; W.over = true; clearInterval(W.timer);
+  const prev = S.bestPairs || 0, rec = W.pairs > prev;
+  if (rec) S.bestPairs = W.pairs;
+  S.challenges = (S.challenges || 0) + 1;
+  S.bestCombo = Math.max(S.bestCombo, W.best);
+  const xp = W.pairs >= 5 ? Math.min(20, Math.round(W.pairs / 2)) : 0;
+  if (xp) addXp(xp);
+  checkAch(); save();
+  $("lbar").style.width = "0%"; $("hearts").innerHTML = CLOCK + "0";
+  const acc = Math.round(100 * W.pairs / Math.max(1, W.pairs + W.miss));
+  const head = rec && prev ? "Neuer Rekord!" : W.pairs >= 20 ? "Wunderbar!" : W.pairs >= 10 ? "Starke Runde!" : "Zeit ist um!";
+  const sub = rec && prev ? `Vorher ${prev} Paare – jetzt ${W.pairs}.` : xp ? (S.dayXp >= DAILY_GOAL ? "Tagesziel erreicht." : "Noch " + (DAILY_GOAL - S.dayXp) + " XP bis zum Tagesziel.") : "Ab 5 Paaren gibt es XP. Gleich nochmal?";
+  $("stage").innerHTML = `<div class="result">
+    <div style="width:110px">${mascot(W.pairs >= 5 ? "cheer" : "happy", W.pairs >= 5 ? "jump" : "idle")}</div>
+    <h2>${head}</h2><p>${esc(sub)}</p>
+    <div class="cards">
+      <div class="rcard"><b>Paare</b><span>${W.pairs}</span></div>
+      <div class="rcard h"><b>Treffer</b><span>${acc}%</span></div>
+      <div class="rcard m"><b>XP</b><span>+${xp}</span></div>
+    </div></div>`;
+  setCheck(`<div class="check-row idle"><button class="btn ghost skipbtn" type="button" id="wAgain">Nochmal</button><button class="btn heather wide" type="button" id="wDone">Weiter</button></div>`, "");
+  $("wAgain").onclick = startWunder;
+  $("wDone").onclick = closeOverlay;
+  tone(rec || W.pairs >= 10 ? "done" : "ok");
+}
+$("btnWunder").addEventListener("click", startWunder);
+
+/* ---------- Wortpaar-Wunder: speaking mode (15 words, 10 s each, clock pauses while speech is recognised) ---------- */
+const SP_N = 15, SP_SECS = 10, SP_R = 48, SP_C = 2 * Math.PI * SP_R;
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let P = null, rec = null, micBroken = false, micStarted = false, inTimer = null, advT = null;
+
+function markMicBroken() {
+  micBroken = true;
+  spModeUi(); const i = $("spIn"); if (i) i.focus();
+}
+const micOk = () => !!SR && !micBroken;
+function spLeft() { return Math.max(0, P.budget - (P.paused ? 0 : Date.now() - P.since)); }
+function spPause() { if (!P.paused) { P.budget = spLeft(); P.paused = true; } }
+function spResume() { if (P.paused) { P.since = Date.now(); P.paused = false; } }
+function spDots() { return `<div class="sp-dots">${P.words.map((_, i) => `<i class="${P.res[i] === true ? "ok" : P.res[i] === false ? "bad" : i === P.i ? "cur" : ""}"></i>`).join("")}</div>`; }
+function startSpeak() {
+  if (W) { W.over = true; clearInterval(W.timer); }
+  const pool = wunderPool();
+  try { const i0 = $("spIn"); if (i0) i0.remove(); } catch (e) {}
+  P = { words: shuffle(pool).slice(0, Math.min(SP_N, pool.length)), i: 0, ok: 0, res: [], used: [], timer: null, over: false, done: false, budget: 0, since: 0, paused: true, start: Date.now() };
+  L = null; lessonActive = true; openOverlay(false); $("hearts").hidden = false;
+  $("stage").innerHTML = "";
+  spWord();
+  P.timer = setInterval(spTick, 100);
+}
+function spBuild() {
+  $("stage").innerHTML = `<h2 class="kind">Sag es auf Englisch</h2><div id="spDots"></div>
+    <div class="sp-word"><div class="sp-de" id="spDe"></div>
+      <div class="sp-ring" id="spRing"><svg class="r" viewBox="0 0 112 112"><circle class="bg" cx="56" cy="56" r="${SP_R}"/><circle class="fg" id="spArc" cx="56" cy="56" r="${SP_R}" stroke-dasharray="${SP_C}" stroke-dashoffset="0"/></svg>
+        <button class="sp-mic" id="spMic" type="button" aria-label="Mikrofon">${MIC_ICON}</button>
+        <span class="sp-big" id="spBig" hidden></span></div>
+      <span class="sp-secs" id="spSecs"></span>
+      <div class="sp-heard" id="spHeard" aria-live="polite"></div>
+      <input class="sp-in" id="spIn" type="text" enterkeyhint="next" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Englische Antwort">
+      <p class="sp-hint" id="spHint"></p>
+    </div>`;
+  const inp = $("spIn");
+  inp.addEventListener("focus", () => { if (rec) spRecStop(); });
+  inp.addEventListener("input", spOnInput);
+  inp.addEventListener("keydown", ev => {
+    if (ev.key !== "Enter") return; ev.preventDefault();
+    if (P.done) return spNextWord();
+    if (inp.value.trim()) spResult(judgeTyped(inp.value, P.words[P.i]).ok, inp.value);
+  });
+  $("spMic").onclick = () => { if (rec) spRecStop(); else spListen(); };
+  spModeUi();
+}
+function spModeUi() {
+  const m = $("spMic"), big = $("spBig"), h = $("spHint"), inp = $("spIn"); if (!m) return;
+  const ok = micOk();
+  m.hidden = !ok; big.hidden = ok;
+  inp.placeholder = ok ? "…oder hier tippen" : "Antippen, dann 🎤 der Tastatur";
+  h.innerHTML = ok ? "Die Uhr pausiert, während du sprichst."
+    : "<b>Diktier-Modus:</b> Tippe ins Feld und dann auf das Mikrofon deiner Tastatur. Die Tastatur bleibt die ganze Runde offen. Die Uhr pausiert, solange Text ankommt.";
+}
+function spWord() {
+  const w = P.words[P.i]; P.done = false; P.budget = SP_SECS * 1000; P.paused = true; P.wStart = Date.now(); P.lastHeard = "";
+  clearTimeout(inTimer); clearTimeout(advT);
+  if (!$("spIn")) spBuild();
+  $("spDe").textContent = w.de;
+  $("spDots").innerHTML = spDots();
+  $("spHeard").textContent = "";
+  const inp = $("spIn"); inp.value = ""; inp.disabled = false;
+  setCheck(`<div class="check-row idle"><button class="btn ghost skipbtn" type="button" id="spSkip">Weiß ich nicht</button></div>`, "");
+  $("spSkip").onclick = () => { spResult(false, ""); if (!micOk()) inp.focus({ preventScroll: true }); };
+  spResume(); spTick();
+  if (micOk()) setTimeout(() => { if (P && !P.over && !P.done && P.words[P.i] === w && document.activeElement !== inp) spListen(); }, 250);
+  else inp.focus({ preventScroll: true });
+}
+function spOnInput() {
+  if (!P || P.done) return;
+  const inp = $("spIn"), w = P.words[P.i], v = inp.value;
+  if (!v.trim()) return;
+  if (spMatch(v, w)) return spResult(true, v);
+  // text is arriving (typing or keyboard dictation): hold the clock, judge once it settles
+  spPause(); clearTimeout(inTimer);
+  inTimer = setTimeout(() => {
+    if (!P || P.done || P.words[P.i] !== w) return;
+    $("spHeard").textContent = "„" + inp.value.trim() + "“ – nochmal!"; tone("bad");
+    inp.value = ""; spResume();
+  }, 1600);
+}
+function spMatch(t, w) {
+  const r = judgeTyped(t, w); if (r.ok) return true;
+  const x = " " + norm(t) + " ";
+  return [w.en, ...w.alt].map(norm).some(a => a && x.includes(" " + a + " "));
+}
+function spListen() {
+  if (!SR || micBroken || !P || P.done || P.over) return;
+  spRecStop();
+  const w = P.words[P.i];
+  try {
+    const r = new SR(); rec = r;
+    r.lang = "en-US"; r.interimResults = true; r.maxAlternatives = 5; r.continuous = false;
+    r.onstart = () => { micStarted = true; const m = $("spMic"); if (m) m.classList.add("on"); };
+    if (!micStarted) setTimeout(() => { if (!micStarted && !micBroken) { try { r.abort(); } catch (e) {} if (rec === r) rec = null; markMicBroken(); } }, 20000);
+    r.onspeechstart = () => { if (P && !P.done) spPause(); };
+    r.onresult = ev => {
+      if (!P || P.done || rec !== r) return;
+      let shown = "", fin = false, hit = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++) {
+        const res = ev.results[i]; shown += res[0].transcript;
+        if (res.isFinal) fin = true;
+        for (let k = 0; k < res.length; k++) if (spMatch(res[k].transcript, w)) hit = res[k].transcript;
+      }
+      const h = $("spHeard"); if (h) h.textContent = "„" + shown.trim() + "“";
+      if (hit) spResult(true, hit);
+      else if (fin) { P.lastHeard = shown.trim(); }
+    };
+    r.onerror = ev => {
+      if (ev.error === "not-allowed" || ev.error === "service-not-allowed" || ev.error === "audio-capture") { if (rec === r) rec = null; markMicBroken(); const h = $("spHint"); if (h) h.innerHTML = "<b>Mikrofon blockiert:</b> In Safari auf „aA“ → Website-Einstellungen → Mikrofon „Erlauben“, dann neu laden. Bis dahin per Tastatur antworten."; }
+    };
+    r.onend = () => {
+      if (rec === r) rec = null;
+      const m = $("spMic"); if (m) m.classList.remove("on");
+      if (!P || P.done || P.over || P.words[P.i] !== w) return;
+      if (P.lastHeard) { const h = $("spHeard"); if (h) h.textContent = "„" + P.lastHeard + "“ – nochmal!"; P.lastHeard = ""; tone("bad"); }
+      spResume();
+      if (!micBroken && document.activeElement !== $("spIn")) setTimeout(() => { if (P && !P.done && !rec && P.words[P.i] === w && document.activeElement !== $("spIn")) spListen(); }, 300);
+    };
+    r.start();
+  } catch (e) { rec = null; markMicBroken(); }
+}
+function spRecStop() { const r = rec; rec = null; if (r) { try { r.abort(); } catch (e) {} } const m = $("spMic"); if (m) m.classList.remove("on"); if (P && !P.done) spResume(); }
+function spTick() {
+  if (!P || P.over || P.done) return;
+  const left = spLeft(), arc = $("spArc");
+  if (arc) arc.setAttribute("stroke-dashoffset", String(SP_C * (1 - left / (SP_SECS * 1000))));
+  const ring = $("spRing"); if (ring) ring.classList.toggle("low", left <= 3000);
+  const s = $("spSecs"); if (s) s.textContent = P.paused ? (micOk() ? "Pause – höre zu …" : "Pause – Text kommt an …") : micOk() ? Math.ceil(left / 1000) + " s" : "Sekunden für dieses Wort";
+  const big = $("spBig"); if (big) big.textContent = Math.ceil(left / 1000);
+  $("lbar").style.width = (P.i / P.words.length * 100) + "%";
+  $("hearts").innerHTML = CLOCK + Math.ceil(left / 1000);
+  $("hearts").style.color = left <= 3000 ? "var(--bad)" : "var(--heather)";
+  if (left <= 0) spResult(false, "");
+}
+function spResult(ok, said) {
+  if (!P || P.done) return;
+  P.done = true; clearTimeout(inTimer); spRecStop(); P.done = true;
+  const w = P.words[P.i];
+  P.res[P.i] = ok; P.used.push(Math.round((Date.now() - P.wStart) / 100) / 10);
+  if (ok) { P.ok++; bump(w.id, true); tone("ok"); }
+  else { bump(w.id, false, true); tone("bad"); }
+  $("spDots").innerHTML = spDots();
+  $("spHeard").textContent = said ? "„" + said.trim() + "“" : "";
+  const last = P.i >= P.words.length - 1;
+  const head = ok ? PRAISE[Math.floor(Math.random() * PRAISE.length)] : said ? "Nicht ganz:" : "Richtige Lösung:";
+  setCheck(`<div class="verdict"><strong>${head}</strong><p>${esc(w.de)} = ${esc(w.en)}</p></div>
+    <div class="check-row"><button class="btn ${ok ? "" : "bad"}" type="button" id="spNext">${last ? "Ergebnis" : "Weiter"}</button></div>`, ok ? "good" : "miss");
+  const nb = $("spNext");
+  nb.addEventListener("pointerdown", ev => ev.preventDefault()); // tapping keeps the keyboard open
+  nb.onclick = spNextWord;
+  $("lbar").style.width = ((P.i + 1) / P.words.length * 100) + "%";
+  setTimeout(() => speak(w.en), ok ? 150 : 300);
+  if (!last) advT = setTimeout(() => { if (P && P.done && !P.over && P.words[P.i] === w) spNextWord(); }, ok ? 1500 : 3000);
+}
+function spNextWord() {
+  if (!P || P.over || !P.done) return;
+  clearTimeout(advT);
+  if (P.i >= P.words.length - 1) { const i = $("spIn"); if (i) i.blur(); return spEnd(); }
+  P.i++; spWord();
+}
+function spStop(final) { if (!P) return; P.over = true; clearInterval(P.timer); const r = rec; rec = null; if (r) try { r.abort(); } catch (e) {} }
+function spEnd() {
+  spStop(true);
+  const n = P.words.length, prev = S.bestSpeak || 0, recd = P.ok > prev;
+  if (recd) S.bestSpeak = P.ok;
+  S.challenges = (S.challenges || 0) + 1;
+  const xp = P.ok;
+  if (xp) addXp(xp);
+  checkAch(); save();
+  const avg = P.used.length ? (P.used.reduce((a, b) => a + b, 0) / P.used.length) : 0;
+  const missed = P.words.filter((_, i) => P.res[i] === false);
+  $("hearts").innerHTML = CLOCK + "–"; $("hearts").style.color = "";
+  const head = P.ok === n ? "Alles richtig!" : recd && prev ? "Neuer Rekord!" : P.ok >= n * .7 ? "Starke Aussprache!" : "Geschafft!";
+  $("stage").innerHTML = `<div class="result">
+    <div style="width:110px">${mascot(P.ok >= n / 2 ? "cheer" : "happy", P.ok >= n / 2 ? "jump" : "idle")}</div>
+    <h2>${head}</h2><p>${recd && prev ? `Vorher ${prev}/${n} – jetzt ${P.ok}/${n}.` : S.dayXp >= DAILY_GOAL ? "Tagesziel erreicht." : "Noch " + Math.max(0, DAILY_GOAL - S.dayXp) + " XP bis zum Tagesziel."}</p>
+    <div class="cards">
+      <div class="rcard"><b>Richtig</b><span>${P.ok}/${n}</span></div>
+      <div class="rcard h"><b>Ø Zeit</b><span>${avg.toFixed(1).replace(".", ",")} s</span></div>
+      <div class="rcard m"><b>XP</b><span>+${xp}</span></div>
+    </div>
+    ${missed.length ? `<div class="mistakes"><strong>Nochmal anschauen</strong>${missed.map(w => `<div>${esc(w.de)} → <b>${esc(w.en)}</b></div>`).join("")}</div>` : ""}
+  </div>`;
+  setCheck(`<div class="check-row idle"><button class="btn ghost skipbtn" type="button" id="spAgain">Nochmal</button><button class="btn heather wide" type="button" id="spDone">Weiter</button></div>`, "");
+  $("spAgain").onclick = startSpeak; $("spDone").onclick = closeOverlay;
+  tone(recd || P.ok >= 10 ? "done" : "ok");
+}
+document.addEventListener("keydown", ev => {
+  if (!P || P.over || !P.done || ev.key !== "Enter") return;
+  if (ev.target && (ev.target.tagName === "BUTTON" || ev.target.id === "spIn")) return;
+  ev.preventDefault(); spNextWord();
+});
+$("btnSpeak").addEventListener("click", startSpeak);
+
+/* ---------- MAX: role-play conversations ---------- */
+const SCEN = [];
+const MAX_TURNS = 6;
+let C = null;
+function renderTalk() {
+  const host = $("convList"); if (!host) return;
+  host.innerHTML = "";
+  if (SAMPLE === null) host.insertAdjacentHTML("beforeend", `<p style="color:var(--ink-soft)">Die KI-Gespräche sind in dieser Ansicht nicht verfügbar. Öffne die Seite in der Claude-App oder auf claude.ai, angemeldet mit deinem Konto.</p>`);
+  SCEN.forEach(sc => {
+    const b = document.createElement("button"); b.type = "button"; b.className = "conv-card"; b.disabled = SAMPLE === null;
+    b.innerHTML = `<span class="avatar ${sc.cls}">${sc.av}</span><span><span class="lvl">${esc(sc.lvl)}</span><b>${esc(sc.title)}</b><span class="d">${esc(sc.de)}</span></span>`;
+    b.onclick = () => startChat(sc);
+    host.appendChild(b);
+  });
+}
+function startChat(sc) {
+  C = { sc, msgs: [{ who: "them", text: sc.opener }], busy: false, ended: false };
+  chatActive = true; openOverlay(true);
+  drawChat(); composeBar();
+  speak(sc.opener);
+}
+function chatBar() { $("lbar").style.width = Math.min(100, C.msgs.filter(m => m.who === "me").length / MAX_TURNS * 100) + "%"; }
+function drawChat() {
+  const sc = C.sc, st = $("stage");
+  st.innerHTML = `<div class="chat"><div class="coach" style="grid-template-columns:64px minmax(0,1fr)"><div>${mascot("happy")}</div><div class="say">${esc(sc.title)}<small>${esc(sc.name)} · ${esc(sc.role)}. Antworte auf Englisch. Nach ${MAX_TURNS} Nachrichten gibt es dein Feedback.</small></div></div>
+    ${C.msgs.map((m, i) => m.who === "them"
+      ? `<div class="msg them"><span class="who"><span class="avatar ${sc.cls}" style="width:24px;height:24px;font-size:10px">${sc.av}</span>${esc(sc.name)}${S.sound ? `<button class="icon-btn" type="button" data-say="${i}" aria-label="Anhören">${ICON.speaker}</button>` : ""}</span><div class="bub">${esc(m.text)}</div></div>`
+      : `<div class="msg me"><div class="bub">${esc(m.text)}</div>${m.tip ? `<div class="tip">Tipp: ${esc(m.tip)}</div>` : ""}</div>`).join("")}
+    ${C.busy ? `<div class="msg them"><div class="bub typing"><i></i><i></i><i></i></div></div>` : ""}
+    ${C.err ? `<p style="color:var(--bad);font-weight:600">${esc(C.err)}</p>` : ""}
+    <div id="fbBox"></div></div>`;
+  st.querySelectorAll("[data-say]").forEach(b => b.onclick = () => speak(C.msgs[+b.dataset.say].text));
+  chatBar();
+  const sc2 = st.parentElement; requestAnimationFrame(() => (sc2.scrollTop = sc2.scrollHeight));
+}
+function composeBar() {
+  const turns = C.msgs.filter(m => m.who === "me").length;
+  const chips = turns === 0 ? `<div class="hints">${C.sc.hints.map(h => `<button class="hint-chip" type="button">${esc(h)}</button>`).join("")}</div>` : "";
+  setCheck(`${chips}<div class="compose"><textarea id="chatIn" aria-label="Deine Antwort auf Englisch" placeholder="Antworte auf Englisch …" rows="1" autocapitalize="sentences"></textarea>
+      <button class="btn" type="button" id="sendBtn" aria-label="Senden" style="padding:13px 16px">${ICON.send.replace("<svg", '<svg width="22" height="22"')}</button></div>
+    ${turns >= 2 ? `<div class="check-row"><button class="btn ${turns >= MAX_TURNS ? "heather" : "ghost"} small" type="button" id="endChat" style="max-width:none;margin-left:0">Gespräch beenden & Feedback</button></div>` : ""}`, "");
+  const ta = $("chatIn");
+  ta.addEventListener("keydown", ev => { if (ev.key === "Enter" && !ev.shiftKey) { ev.preventDefault(); sendChat(); } });
+  ta.addEventListener("input", () => { ta.style.height = "auto"; ta.style.height = Math.min(140, ta.scrollHeight) + "px"; });
+  $("sendBtn").onclick = sendChat;
+  document.querySelectorAll(".hint-chip").forEach(c => c.onclick = () => { ta.value = c.textContent; ta.focus(); });
+  const ec = $("endChat"); if (ec) ec.onclick = feedback;
+  if (turns >= MAX_TURNS) { ta.disabled = true; ta.placeholder = "Zeit für dein Feedback"; $("sendBtn").disabled = true; }
+}
+function transcript() { return C.msgs.map(m => (m.who === "them" ? C.sc.name : "the learner") + ": " + m.text).join("\n"); }
+async function sendChat() {
+  const ta = $("chatIn"); const text = (ta.value || "").trim();
+  if (!text || C.busy || C.ended) return;
+  C.msgs.push({ who: "me", text }); C.busy = true; C.err = ""; drawChat();
+  setCheck(`<div class="check-row"><span style="color:var(--ink-soft);font-weight:600">${esc(C.sc.name)} schreibt …</span></div>`, "");
+  const s = await getSample();
+  if (!s) { C.busy = false; C.err = "KI ist in dieser Ansicht nicht verfügbar."; drawChat(); composeBar(); return; }
+  const last = C.msgs.filter(m => m.who === "me").length >= MAX_TURNS;
+  const prompt = `You are role-playing to help the learner, a German horticulture professional (C1 English, trained ornamental grower), practise workplace English. He will be Growth Manager for the Calluna vulgaris "Beauty Ladies" heather brand in North America, working with a propagator in British Columbia.
+Character you play: ${C.sc.name}, ${C.sc.role}.
+Situation: ${C.sc.setting}
+Rules for "reply": stay in character, natural Canadian English, use real horticulture terms where they fit, 1 to 3 short sentences${last ? ", and wrap the conversation up warmly because this is the last exchange" : ", end with a question or hook so the conversation continues"}. Never mention that this is practice.
+Rules for "tip": check only the learner's LAST message. Give ONE short tip in German (max 25 words). If there is a grammar, word-choice or terminology issue, quote the better English wording. If it was good, praise briefly in German or suggest a more natural or more technical term.
+Conversation so far:
+${transcript()}
+Return only JSON: {"reply": "...", "tip": "..."}`;
+  try {
+    const r = await s.json(prompt, { cache: false });
+    const mine = C.msgs[C.msgs.length - 1];
+    mine.tip = r && r.tip ? String(r.tip) : "";
+    C.msgs.push({ who: "them", text: r && r.reply ? String(r.reply) : "Sorry, could you say that again?" });
+    C.busy = false; drawChat(); composeBar();
+    speak(C.msgs[C.msgs.length - 1].text);
+  } catch (err) {
+    C.msgs.pop(); C.busy = false; C.err = aiError(err); drawChat(); composeBar(); $("chatIn").value = text;
+  }
+}
+async function feedback() {
+  if (C.ended) return; C.ended = true;
+  setCheck(`<div class="check-row"><span style="color:var(--ink-soft);font-weight:600">Callie bewertet dein Gespräch …</span></div>`, "");
+  const s = await getSample();
+  const prompt = `Du bist Englisch-Coach. Bewerte the learner's Englisch in diesem Rollenspiel (Gärtnerei-Kontext Nordamerika, Calluna/Heide). the learner ist Deutscher mit C1-Niveau.
+Gespräch:
+${transcript()}
+Antworte nur mit JSON: {"stars": 1-5, "good": ["max 2 kurze Punkte auf Deutsch"], "improve": ["2-3 kurze Punkte auf Deutsch, jeweils mit besserer englischer Formulierung in Anführungszeichen"], "words": [{"en": "nützlicher englischer Fachbegriff oder Ausdruck", "de": "Deutsch"}] (max 4)}`;
+  let r = null;
+  try { r = await s.json(prompt, { cache: false }); } catch (err) { C.err = aiError(err); }
+  const stars = Math.max(1, Math.min(5, Math.round((r && r.stars) || 3)));
+  const xp = r ? 10 + stars * 2 : 0;
+  if (r) { addXp(xp); S.convs++; checkAch(); save(); }
+  const box = $("fbBox");
+  if (box) box.innerHTML = `<div class="fb"><div class="coach" style="grid-template-columns:72px minmax(0,1fr)"><div>${mascot("cheer", "jump")}</div>
+      <div><h3>Dein Feedback</h3><span class="stars" aria-label="${stars} von 5 Sternen">${[1,2,3,4,5].map(k => k <= stars ? ICON.star : ICON.star.replace("<svg", '<svg class="off"')).join("")}</span>${r ? `<div style="font-weight:700;color:var(--heather)">+${xp} XP</div>` : ""}</div></div>
+    ${r && r.good && r.good.length ? `<div><strong>Gut gemacht</strong><ul>${r.good.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    ${r && r.improve && r.improve.length ? `<div><strong>Besser so</strong><ul>${r.improve.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    ${r && r.words && r.words.length ? `<div><strong>Neue Ausdrücke</strong><ul>${r.words.map(x => `<li><b>${esc(x.en || "")}</b> – ${esc(x.de || "")}</li>`).join("")}</ul></div>` : ""}
+    ${!r ? `<p>${esc(C.err || "Feedback konnte nicht geladen werden.")}</p>` : ""}</div>`;
+  tone("done");
+  setCheck(`<div class="check-row"><button class="btn ghost" type="button" id="againChat">Nochmal</button><button class="btn heather" type="button" id="doneChat">Fertig</button></div>`, "");
+  $("doneChat").onclick = closeOverlay;
+  $("againChat").onclick = () => startChat(C.sc);
+  const sc2 = $("stage").parentElement; requestAnimationFrame(() => (sc2.scrollTop = sc2.scrollHeight));
+}
+function endChatPrompt() {
+  if (!C || C.ended) return closeOverlay();
+  const draft = $("chatIn") ? $("chatIn").value : "";
+  setCheck(`<div class="verdict"><strong>Gespräch verlassen?</strong><p class="note">Ohne Feedback gibt es keine XP.</p></div>
+    <div class="check-row"><button class="btn ghost" type="button" id="stayChat">Weiter schreiben</button><button class="btn bad" type="button" id="leaveChat">Verlassen</button></div>`, "");
+  $("stayChat").onclick = () => { composeBar(); if ($("chatIn")) $("chatIn").value = draft; }; $("leaveChat").onclick = closeOverlay;
+}
+
+render();
+initStore();
+</script>
+
+</body></html>
